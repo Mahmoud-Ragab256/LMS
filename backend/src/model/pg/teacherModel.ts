@@ -46,8 +46,7 @@ export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<
     const values = keys.map((key) => data[key]);
 
     const query = `
-    UPDATE teachers
-    SET ${setClause}
+    UPDATE teachers SET ${setClause}
     WHERE id = $${keys.length + 1}
     RETURNING *;
     `;

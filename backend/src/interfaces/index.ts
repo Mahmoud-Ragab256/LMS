@@ -49,7 +49,7 @@ export interface ICreateStudent {
   nid: string;
 }
 
-export interface IUpdateTeacher {
+export interface IUpdateStudent {
   username?: string;
   email?: string;
   phone?: string;
