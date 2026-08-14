@@ -4,7 +4,7 @@ import type { ITeacher, ICreateTeacher, IUpdateTeacher } from '../../interfaces/
 
 export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | undefined> => {
   try {
-    const { username, email, phone, hashedPassword: password } = data
+    const { username, email, phone, password } = data
     const query = `
   INSERT INTO teachers (username , email, phone , password)
   values ($1 , $2 , $3 , $4)
