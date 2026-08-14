@@ -1,4 +1,7 @@
-import { Pool } from 'pg'
+import { Pool, types } from 'pg'
+
+types.setTypeParser(1114, (str) => str);
+types.setTypeParser(1184, (str) => str);
 
 const pool = new Pool({
   user: process.env.PG_USER,
