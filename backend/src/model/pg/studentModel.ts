@@ -60,7 +60,7 @@ export const updateStudent = async (id: number, data: IUpdateStudent): Promise<I
 
 export const deleteStudent = async (id: number): Promise<IStudent | undefined> => {
   try {
-    const query = `DELETE * FROM students WHERE id = $1;`;
+    const query = `DELETE * FROM students WHERE id = $1 RETURNING *;`;
     const result = await pool.query<IStudent>(query, [id]);
     return result.rows[0];
   } catch (error) {
