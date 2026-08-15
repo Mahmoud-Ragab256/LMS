@@ -1,17 +1,17 @@
-import pool from "./connection.js";
+import Query from "./connection.js";
 import type { ICourse, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
 
 export const createCourse = async (teacherId: number, data: ICreateCourse): Promise<ICourse | undefined> => {
   try {
-    const { price, description, img_url } = data;
+    const { price, description, imgUrl } = data;
     const query = `
     INSERT INTO courses (price, description, img_url, teacher_id)
     VALUES ($1, $2, $3, $4)
     RETURNING *;
     `;
-    const values = [price, description, img_url, teacherId];
-    const result = await pool.query<ICourse>(query, values);
-    return result.rows[0];
+    const values = [price, description, imgUrl, teacherId];
+    const result = await Query<ICourse>(query, values);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -20,8 +20,8 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
 export const getAllCourses = async (): Promise<ICourse[] | undefined> => {
   try {
     const query = `SELECT * FROM courses ORDER BY id DESC;`;
-    const result = await pool.query<ICourse[]>(query);
-    return result.rows[0];
+    const result = await Query<ICourse>(query);
+    return result;
   } catch (error) {
     console.error(error);
   }
@@ -31,8 +31,8 @@ export const getAllCourses = async (): Promise<ICourse[] | undefined> => {
 export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | undefined> => {
   try {
     const query = `SELECT * FROM courses WHERE teacher_id = $1 ORDER BY id DESC;`;
-    const result = await pool.query<ICourse[]>(query, [teacherId]);
-    return result.rows[0];
+    const result = await Query<ICourse>(query, [teacherId]);
+    return result;
   } catch (error) {
     console.error(error);
   }
@@ -41,8 +41,8 @@ export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | 
 export const getCourseById = async (id: number): Promise<ICourse | undefined> => {
   try {
     const query = `SELECT * FROM courses WHERE id = $1;`;
-    const result = await pool.query<ICourse>(query, [id]);
-    return result.rows[0];
+    const result = await Query<ICourse>(query, [id]);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -61,8 +61,8 @@ export const updateCourse = async (id: number, teacherId: number, data: IUpdateC
     RETURNING *;
     `;
 
-    const result = await pool.query<ICourse>(query, [...values, id, teacherId]);
-    return result.rows[0];
+    const result = await Query<ICourse>(query, [...values, id, teacherId]);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -71,8 +71,8 @@ export const updateCourse = async (id: number, teacherId: number, data: IUpdateC
 export const deleteCourse = async (id: number): Promise<ICourse | undefined> => {
   try {
     const query = `DELETE * FROM courses WHERE id = $1 RETURNING *;`;
-    const result = await pool.query<ICourse>(query, [id]);
-    return result.rows[0];
+    const result = await Query<ICourse>(query, [id]);
+    return result[0];
   } catch (error) {
     console.error(error);
   }

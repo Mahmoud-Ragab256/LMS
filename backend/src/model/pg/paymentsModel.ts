@@ -1,4 +1,4 @@
-import pool from './connection.js';
+import Query from './connection.js';
 import type { IPayment, ICreatePayment, IUpdatePaymentStatus } from '../../interfaces/index.js';
 
 export const createPayment = async (data: ICreatePayment): Promise<IPayment | undefined> => {
@@ -23,12 +23,8 @@ export const createPayment = async (data: ICreatePayment): Promise<IPayment | un
       provider_transaction_id, currency, payment_method, wallet_number, status, raw_response
     )
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-    RETURNING
-      id, student_id AS "studentId", course_id AS "courseId", amount, provider,
-      provider_order_id AS "providerOrderId", provider_transaction_id AS "providerTransactionId",
-      currency, payment_method AS "paymentMethod", wallet_number AS "walletNumber",
-      status, raw_response AS "rawResponse", created_at AS "createdAt", updated_at AS "updatedAt";
-  `;
+    RETURNING *
+    `;
 
     const values = [
       studentId,
@@ -44,8 +40,8 @@ export const createPayment = async (data: ICreatePayment): Promise<IPayment | un
       rawResponse ? JSON.stringify(rawResponse) : null,
     ];
 
-    const result = await pool.query<IPayment>(query, values);
-    return result.rows[0];
+    const result = await Query<IPayment>(query, values);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -64,12 +60,8 @@ export const updatePaymentByOrderId = async (providerOrderId: string, data: IUpd
       payment_method = COALESCE($4, payment_method),
       updated_at = NOW()
     WHERE provider_order_id = $5
-    RETURNING
-      id, student_id AS "studentId", course_id AS "courseId", amount, provider,
-      provider_order_id AS "providerOrderId", provider_transaction_id AS "providerTransactionId",
-      currency, payment_method AS "paymentMethod", wallet_number AS "walletNumber",
-      status, raw_response AS "rawResponse", created_at AS "createdAt", updated_at AS "updatedAt";
-  `;
+    RETURNING *
+    `;
 
     const values = [
       status,
@@ -79,8 +71,8 @@ export const updatePaymentByOrderId = async (providerOrderId: string, data: IUpd
       providerOrderId,
     ];
 
-    const result = await pool.query<IPayment>(query, values);
-    return result.rows[0];
+    const result = await Query<IPayment>(query, values);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -88,16 +80,9 @@ export const updatePaymentByOrderId = async (providerOrderId: string, data: IUpd
 
 export const getPaymentById = async (id: number): Promise<IPayment | undefined> => {
   try {
-    const query = `
-    SELECT
-      id, student_id AS "studentId", course_id AS "courseId", amount, provider,
-      provider_order_id AS "providerOrderId", provider_transaction_id AS "providerTransactionId",
-      currency, payment_method AS "paymentMethod", wallet_number AS "walletNumber",
-      status, raw_response AS "rawResponse", created_at AS "createdAt", updated_at AS "updatedAt"
-    FROM payments WHERE id = $1;
-  `;
-    const result = await pool.query<IPayment>(query, [id]);
-    return result.rows[0];
+    const query = `SELECT * FROM payments WHERE id = $1;`;
+    const result = await Query<IPayment>(query, [id]);
+    return result[0];
   } catch (error) {
     console.error(error);
   }
@@ -115,8 +100,8 @@ export const getPaymentsByStudentId = async (studentId: number): Promise<IPaymen
     WHERE student_id = $1
     ORDER BY created_at DESC;
   `;
-    const result = await pool.query<IPayment[]>(query, [studentId]);
-    return result.rows[0];
+    const result = await Query<IPayment>(query, [studentId]);
+    return result;
   } catch (error) {
     console.error(error);
   }

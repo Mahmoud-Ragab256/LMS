@@ -1,39 +1,39 @@
-import pool from './connection.js'
+import Query from './connection.js'
 import type { ITeacher, ICreateTeacher, IUpdateTeacher } from '../../interfaces/index.js'
 
 
 export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | undefined> => {
   try {
-    const { username, email, phone, password } = data
+    const { username, email, phone, password } = data;
     const query = `
   INSERT INTO teachers (username , email, phone , password)
   values ($1 , $2 , $3 , $4)
   RETURNING *;
   `;
-    const values = [username, email, phone, password]
-    const result = await pool.query<ITeacher>(query, values)
-    return result.rows[0]
+    const values = [username, email, phone, password];
+    const result = await Query<ITeacher>(query, values);
+    return result[0];
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
 export const getAllTeachers = async (): Promise<ITeacher[] | undefined> => {
   try {
     const query = `SELECT * FROM teachers ORDER BY id DESC;`;
-    const result = await pool.query<ITeacher[]>(query)
-    return result.rows[0]
+    const result = await Query<ITeacher>(query);
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 export const getTeacherById = async (id: number): Promise<ITeacher | undefined> => {
   try {
     const query = `SELECT * FROM teachers WHERE id = $1;`;
-    const result = await pool.query<ITeacher>(query, [id])
-    return result.rows[0]
+    const result = await Query<ITeacher>(query, [id]);
+    return result[0];
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -51,19 +51,19 @@ export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<
     RETURNING *;
     `;
 
-    const result = await pool.query<ITeacher>(query, [...values, id]);
-    return result.rows[0];
+    const result = await Query<ITeacher>(query, [...values, id]);
+    return result[0];
 
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
 export const deleteTeacher = async (id: number): Promise<ITeacher | undefined> => {
   try {
     const query = `DELETE * FROM teachers WHERE id = $1 RETURNING *;`;
-    const result = await pool.query<ITeacher>(query, [id])
-    return result.rows[0]
+    const result = await Query<ITeacher>(query, [id])
+    return result[0];
   } catch (error) {
     console.error(error)
   }

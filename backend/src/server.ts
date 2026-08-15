@@ -1,16 +1,17 @@
 import express, { type Request, type Response } from 'express'
-import pool from './model/pg/connection.js'
+import { pool } from './model/pg/connection.js'
+import Query from './model/pg/connection.js';
 
 
 const app = express();
 
 app.get('/api/pg/health', async (req: Request, res: Response) => {
   try {
-    const result = await pool.query('SELECT NOW();');
+    const result = await Query('SELECT * FROM students');
     res.status(200).json({
       status: 'success',
       message: 'Database connection is healthy!',
-      time: result.rows[0].now
+      time: result
     });
   } catch (error) {
     res.status(500).json({
