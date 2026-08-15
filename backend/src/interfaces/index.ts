@@ -1,3 +1,5 @@
+import type { enrollmentStatusTypes, paymentStatusTypes } from "../types/index.js";
+
 export interface ITeacher {
   id: number;
   username: string;
@@ -96,7 +98,7 @@ export interface IPayment {
   currency: string;
   paymentMethod?: string | null;
   walletNumber?: string | null;
-  status: 'pending' | 'success' | 'failed' | 'refunded';
+  status: paymentStatusTypes;
   rawResponse?: Record<string, any> | null;
   createdAt: Date | string;
   updatedAt: Date | string;
@@ -117,8 +119,41 @@ export interface ICreatePayment {
 }
 
 export interface IUpdatePaymentStatus {
-  status: 'pending' | 'success' | 'failed' | 'refunded';
+  status: paymentStatusTypes;
   providerTransactionId?: string;
   rawResponse?: Record<string, any>;
   paymentMethod?: string;
+}
+
+
+// ---------------- Enrollments ---------------
+
+export interface IEnrollment {
+  studentId: number;
+  courseId: number;
+  paymentId: number;
+  status: enrollmentStatusTypes;
+  enrolledAt: Date | string;
+  updatedAt: Date | string;
+  createdAt: Date | string;
+}
+
+export interface ICreateEnrollment {
+  studentId: number;
+  courseId: number;
+  paymentId: number;
+  status?: enrollmentStatusTypes;
+}
+
+export interface IUpdateEnrollment {
+  status: enrollmentStatusTypes;
+}
+
+export interface ICourseStudent {
+  id: number;
+  username: string;
+  email: string;
+  phone?: string;
+  enrolledAt: Date | string;
+  enrollmentStatus: string;
 }
