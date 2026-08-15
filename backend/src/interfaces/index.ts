@@ -81,3 +81,44 @@ export interface IUpdateCourse {
   description?: string;
   img_url?: string;
 }
+
+
+// ---------------- Payments ---------------
+
+export interface IPayment {
+  id: number;
+  studentId: number;
+  courseId: number;
+  provider: string;
+  providerOrderId?: string | null;
+  providerTransactionId?: string | null;
+  amount: number;
+  currency: string;
+  paymentMethod?: string | null;
+  walletNumber?: string | null;
+  status: 'pending' | 'success' | 'failed' | 'refunded';
+  rawResponse?: Record<string, any> | null;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+}
+
+export interface ICreatePayment {
+  studentId: number;
+  courseId: number;
+  amount: number;
+  provider?: string;
+  providerOrderId?: string;
+  providerTransactionId?: string;
+  currency?: string;
+  paymentMethod?: string;
+  walletNumber?: string;
+  status?: string;
+  rawResponse?: Record<string, any>;
+}
+
+export interface IUpdatePaymentStatus {
+  status: 'pending' | 'success' | 'failed' | 'refunded';
+  providerTransactionId?: string;
+  rawResponse?: Record<string, any>;
+  paymentMethod?: string;
+}
