@@ -1,4 +1,4 @@
-import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType, AssessmentAttemptStatus } from "../types/index.js";
+import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType, AssessmentAttemptStatus, ApiResponseStatus } from "../types/index.js";
 
 export interface ITeacher {
   id: number;
@@ -248,3 +248,22 @@ export interface ICourseCounter {
   courseId: string;
   lastOrder: number;
 }
+
+
+// ---------------- API ---------------
+
+export interface ApiSuccessResponse<T = any> {
+  status: ApiResponseStatus;
+  data?: T;
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+}
+
+export type ApiErrorResponse = {
+  status: ApiErrorResponse;
+  message: string;
+  errors?: any;
+};
