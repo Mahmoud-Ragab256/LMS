@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import type { IMatchPair } from '../../interfaces/index.js'
 
 const matchPairSchema = new mongoose.Schema(
   {

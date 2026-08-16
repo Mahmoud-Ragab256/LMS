@@ -1,4 +1,4 @@
-import type { enrollmentStatusType, paymentStatusType, QuestionType } from "../types/index.js";
+import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType } from "../types/index.js";
 
 export interface ITeacher {
   id: number;
@@ -98,7 +98,7 @@ export interface IPayment {
   currency: string;
   paymentMethod?: string | null;
   walletNumber?: string | null;
-  status: paymentStatusType;
+  status: PaymentStatusType;
   rawResponse?: Record<string, any> | null;
   createdAt: Date | string;
   updatedAt: Date | string;
@@ -119,7 +119,7 @@ export interface ICreatePayment {
 }
 
 export interface IUpdatePaymentStatus {
-  status: paymentStatusType;
+  status: PaymentStatusType;
   providerTransactionId?: string;
   rawResponse?: Record<string, any>;
   paymentMethod?: string;
@@ -132,7 +132,7 @@ export interface IEnrollment {
   studentId: number;
   courseId: number;
   paymentId: number;
-  status: enrollmentStatusType;
+  status: EnrollmentStatusType;
   enrolledAt: Date | string;
   updatedAt: Date | string;
   createdAt: Date | string;
@@ -142,11 +142,11 @@ export interface ICreateEnrollment {
   studentId: number;
   courseId: number;
   paymentId: number;
-  status?: enrollmentStatusType;
+  status?: EnrollmentStatusType;
 }
 
 export interface IUpdateEnrollment {
-  status: enrollmentStatusType;
+  status: EnrollmentStatusType;
 }
 
 export interface ICourseStudent {
@@ -171,8 +171,8 @@ export interface IVideo {
   duration: number;
   resolution: string;
   size?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }
 
 
@@ -192,4 +192,20 @@ export interface IQuestion {
   modelAnswer?: string;
   pairs?: IMatchPair[];
   points: number;
+}
+
+
+// ---------------- Quizzes and Exams ---------------
+
+export interface IAssessment {
+  _id: string;
+  courseId: string;
+  order: number;
+  assessmentType: AssessmentType;
+  title: string;
+  questions: IQuestion[];
+  timeLimit: number;
+  passingScore: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
