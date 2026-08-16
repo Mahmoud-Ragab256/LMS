@@ -157,3 +157,24 @@ export interface ICourseStudent {
   enrolledAt: Date | string;
   enrollmentStatus: string;
 }
+
+
+// ---------------- Video ---------------
+
+
+export interface IVideo {
+  _id: string;
+  courseId: string;
+  order: number;
+  title: string;
+  url: string;
+  duration: number;
+  resolution: string;
+  size?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+
+// ---------------- Video ---------------
