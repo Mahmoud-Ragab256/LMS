@@ -1,4 +1,4 @@
-import type { enrollmentStatusTypes, paymentStatusTypes } from "../types/index.js";
+import type { enrollmentStatusType, paymentStatusType, QuestionType } from "../types/index.js";
 
 export interface ITeacher {
   id: number;
@@ -98,7 +98,7 @@ export interface IPayment {
   currency: string;
   paymentMethod?: string | null;
   walletNumber?: string | null;
-  status: paymentStatusTypes;
+  status: paymentStatusType;
   rawResponse?: Record<string, any> | null;
   createdAt: Date | string;
   updatedAt: Date | string;
@@ -119,7 +119,7 @@ export interface ICreatePayment {
 }
 
 export interface IUpdatePaymentStatus {
-  status: paymentStatusTypes;
+  status: paymentStatusType;
   providerTransactionId?: string;
   rawResponse?: Record<string, any>;
   paymentMethod?: string;
@@ -132,7 +132,7 @@ export interface IEnrollment {
   studentId: number;
   courseId: number;
   paymentId: number;
-  status: enrollmentStatusTypes;
+  status: enrollmentStatusType;
   enrolledAt: Date | string;
   updatedAt: Date | string;
   createdAt: Date | string;
@@ -142,11 +142,11 @@ export interface ICreateEnrollment {
   studentId: number;
   courseId: number;
   paymentId: number;
-  status?: enrollmentStatusTypes;
+  status?: enrollmentStatusType;
 }
 
 export interface IUpdateEnrollment {
-  status: enrollmentStatusTypes;
+  status: enrollmentStatusType;
 }
 
 export interface ICourseStudent {
@@ -177,4 +177,19 @@ export interface IVideo {
 
 
 
-// ---------------- Video ---------------
+// ---------------- Questions ---------------
+
+export interface IMatchPair {
+  left: string;
+  right: string;
+}
+
+export interface IQuestion {
+  type: QuestionType;
+  text: string;
+  options?: string[];
+  correctAnswer?: string;
+  modelAnswer?: string;
+  pairs?: IMatchPair[];
+  points: number;
+}
