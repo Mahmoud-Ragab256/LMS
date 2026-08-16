@@ -1,4 +1,4 @@
-import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType } from "../types/index.js";
+import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType, AssessmentAttemptStatus } from "../types/index.js";
 
 export interface ITeacher {
   id: number;
@@ -206,6 +206,36 @@ export interface IAssessment {
   questions: IQuestion[];
   timeLimit: number;
   passingScore: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ISelectedPair {
+  left: number;
+  right: number;
+}
+
+export interface IAnswer {
+  questionIndex: number;
+  type: QuestionType;
+  selectedAnswer?: string;
+  textAnswer?: string;
+  selectedPairs?: ISelectedPair[];
+  isCorrect: boolean | null;
+  score: number | null;
+  graded: boolean;
+}
+
+export interface IAssessmentAttempt {
+  _id: string;
+  studentId: string;
+  quizId: string;
+  assessmentType: AssessmentType;
+  answers: IAnswer[];
+  totalScore: number;
+  maxScore: number;
+  status: AssessmentAttemptStatus;
+  submittedAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
