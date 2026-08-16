@@ -46,3 +46,5 @@ const assessmentAttemptSchema = new mongoose.Schema(
 assessmentAttemptSchema.index({ studentId: 1, quizId: 1 });
 
 const AssessmentAttempt: Model<IAssessmentAttempt> = mongoose.model<IAssessmentAttempt>('ExamAttempt', assessmentAttemptSchema);
+
+export default AssessmentAttempt;

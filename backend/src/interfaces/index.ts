@@ -239,3 +239,12 @@ export interface IAssessmentAttempt {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+// ---------------- Counter ---------------
+
+export interface ICourseCounter {
+  _id: string;
+  courseId: string;
+  lastOrder: number;
+}
