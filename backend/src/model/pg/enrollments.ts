@@ -1,5 +1,6 @@
 import Query from './connection.js';
 import type { IEnrollment, ICreateEnrollment, IUpdateEnrollment, ICourseStudent } from '../../interfaces/index.js';
+import AppError from '../../utils/appError.js';
 
 
 
@@ -16,7 +17,9 @@ export const createEnrollment = async (data: ICreateEnrollment): Promise<IEnroll
     const result = await Query<IEnrollment>(query, [studentId, courseId, paymentId, status]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 };
 
@@ -26,7 +29,9 @@ export const getStudentEnrollments = async (studentId: number): Promise<IEnrollm
     const result = await Query<IEnrollment>(query, [studentId]);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -36,7 +41,9 @@ export const updateEnrollment = async (id: number, status: IUpdateEnrollment): P
     const result = await Query<IEnrollment>(query, [status, id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -51,6 +58,8 @@ export const getAllCourseStudents = async (courseId: number): Promise<ICourseStu
     const result = await Query<ICourseStudent>(query, [courseId]);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }

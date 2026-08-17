@@ -36,6 +36,7 @@ export const registerTeacher = async (
     if (error instanceof z.ZodError) throw new ZodError(400, error.issues)
 
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
-    throw new AppError(500, message);
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    throw new AppError(statusCode, message);
   }
 }

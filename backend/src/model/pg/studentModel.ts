@@ -1,5 +1,6 @@
 import Query from './connection.js'
 import type { IStudent, ICreateStudent, IUpdateStudent } from '../../interfaces/index.js'
+import AppError from '../../utils/appError.js';
 
 export const createStudent = async (data: ICreateStudent): Promise<IStudent | undefined> => {
   try {
@@ -13,8 +14,13 @@ export const createStudent = async (data: ICreateStudent): Promise<IStudent | un
     const result = await Query<IStudent>(query, values);
 
     return result[0];
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.code === '23505') {
+      throw new AppError(409, "email is already exist")
+    }
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -24,7 +30,9 @@ export const getAllStudents = async (): Promise<IStudent[] | undefined> => {
     const result = await Query<IStudent>(query);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -34,7 +42,9 @@ export const getStudentById = async (id: number): Promise<IStudent | undefined> 
     const result = await Query<IStudent>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -54,7 +64,9 @@ export const updateStudent = async (id: number, data: IUpdateStudent): Promise<I
     const result = await Query<IStudent>(query, [...values, id])
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -64,6 +76,8 @@ export const deleteStudent = async (id: number): Promise<IStudent | undefined> =
     const result = await Query<IStudent>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }

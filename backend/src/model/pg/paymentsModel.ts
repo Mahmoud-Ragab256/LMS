@@ -1,5 +1,6 @@
 import Query from './connection.js';
 import type { IPayment, ICreatePayment, IUpdatePaymentStatus } from '../../interfaces/index.js';
+import AppError from '../../utils/appError.js';
 
 export const createPayment = async (data: ICreatePayment): Promise<IPayment | undefined> => {
   try {
@@ -43,7 +44,9 @@ export const createPayment = async (data: ICreatePayment): Promise<IPayment | un
     const result = await Query<IPayment>(query, values);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 };
 
@@ -74,7 +77,9 @@ export const updatePaymentByOrderId = async (providerOrderId: string, data: IUpd
     const result = await Query<IPayment>(query, values);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 };
 
@@ -84,7 +89,9 @@ export const getPaymentById = async (id: number): Promise<IPayment | undefined> 
     const result = await Query<IPayment>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 };
 
@@ -103,6 +110,8 @@ export const getPaymentsByStudentId = async (studentId: number): Promise<IPaymen
     const result = await Query<IPayment>(query, [studentId]);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 };

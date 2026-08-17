@@ -1,5 +1,6 @@
 import Query from "./connection.js";
 import type { ICourse, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
+import AppError from "../../utils/appError.js";
 
 export const createCourse = async (teacherId: number, data: ICreateCourse): Promise<ICourse | undefined> => {
   try {
@@ -13,7 +14,9 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
     const result = await Query<ICourse>(query, values);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -23,7 +26,9 @@ export const getAllCourses = async (): Promise<ICourse[] | undefined> => {
     const result = await Query<ICourse>(query);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 
 }
@@ -34,7 +39,9 @@ export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | 
     const result = await Query<ICourse>(query, [teacherId]);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -44,7 +51,9 @@ export const getCourseById = async (id: number): Promise<ICourse | undefined> =>
     const result = await Query<ICourse>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -64,7 +73,9 @@ export const updateCourse = async (id: number, teacherId: number, data: IUpdateC
     const result = await Query<ICourse>(query, [...values, id, teacherId]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -74,6 +85,8 @@ export const deleteCourse = async (id: number): Promise<ICourse | undefined> => 
     const result = await Query<ICourse>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }

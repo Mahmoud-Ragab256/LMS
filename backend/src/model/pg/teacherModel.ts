@@ -1,5 +1,6 @@
 import Query from './connection.js'
 import type { ITeacher, ICreateTeacher, IUpdateTeacher } from '../../interfaces/index.js'
+import AppError from '../../utils/appError.js';
 
 
 export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | undefined> => {
@@ -13,8 +14,13 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
     const values = [username, email, phone, password];
     const result = await Query<ITeacher>(query, values);
     return result[0];
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    if (error.code === '23505') {
+      throw new AppError(409, "email is already exist")
+    }
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -24,7 +30,9 @@ export const getAllTeachers = async (): Promise<ITeacher[] | undefined> => {
     const result = await Query<ITeacher>(query);
     return result;
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 export const getTeacherById = async (id: number): Promise<ITeacher | undefined> => {
@@ -33,7 +41,9 @@ export const getTeacherById = async (id: number): Promise<ITeacher | undefined> 
     const result = await Query<ITeacher>(query, [id]);
     return result[0];
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -55,7 +65,9 @@ export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<
     return result[0];
 
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
 
@@ -65,6 +77,8 @@ export const deleteTeacher = async (id: number): Promise<ITeacher | undefined> =
     const result = await Query<ITeacher>(query, [id])
     return result[0];
   } catch (error) {
-    console.error(error)
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
   }
 }
