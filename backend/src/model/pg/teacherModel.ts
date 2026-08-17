@@ -13,6 +13,7 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
   `;
     const values = [username, email, phone, password];
     const result = await Query<ITeacher>(query, values);
+    delete (result[0] as any).password
     return result[0];
   } catch (error: any) {
     if (error.code === '23505') {
@@ -28,6 +29,7 @@ export const getAllTeachers = async (): Promise<ITeacher[] | undefined> => {
   try {
     const query = `SELECT * FROM teachers ORDER BY id DESC;`;
     const result = await Query<ITeacher>(query);
+    delete (result as any).password
     return result;
   } catch (error) {
     if (error instanceof Error) {
@@ -39,6 +41,7 @@ export const getTeacherById = async (id: number): Promise<ITeacher | undefined> 
   try {
     const query = `SELECT * FROM teachers WHERE id = $1;`;
     const result = await Query<ITeacher>(query, [id]);
+    delete (result[0] as any).password
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
@@ -62,6 +65,7 @@ export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<
     `;
 
     const result = await Query<ITeacher>(query, [...values, id]);
+    delete (result[0] as any).password
     return result[0];
 
   } catch (error) {
@@ -74,7 +78,8 @@ export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<
 export const deleteTeacher = async (id: number): Promise<ITeacher | undefined> => {
   try {
     const query = `DELETE * FROM teachers WHERE id = $1 RETURNING *;`;
-    const result = await Query<ITeacher>(query, [id])
+    const result = await Query<ITeacher>(query, [id]);
+    delete (result[0] as any).password
     return result[0];
   } catch (error) {
     if (error instanceof Error) {

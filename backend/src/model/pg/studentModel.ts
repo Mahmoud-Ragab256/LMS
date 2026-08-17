@@ -12,7 +12,7 @@ export const createStudent = async (data: ICreateStudent): Promise<IStudent | un
   `;
     const values = [username, email, password, phone, nid];
     const result = await Query<IStudent>(query, values);
-
+    delete (result[0] as any).password;
     return result[0];
   } catch (error: any) {
     if (error.code === '23505') {
@@ -28,6 +28,7 @@ export const getAllStudents = async (): Promise<IStudent[] | undefined> => {
   try {
     const query = `SELECT * FROM students ORDER BY id DESC;`;
     const result = await Query<IStudent>(query);
+    delete (result as any).password;
     return result;
   } catch (error) {
     if (error instanceof Error) {
@@ -40,6 +41,7 @@ export const getStudentById = async (id: number): Promise<IStudent | undefined> 
   try {
     const query = `SELECT * FROM students WHERE id = $1;`;
     const result = await Query<IStudent>(query, [id]);
+    delete (result[0] as any).password;
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
@@ -62,6 +64,7 @@ export const updateStudent = async (id: number, data: IUpdateStudent): Promise<I
     `;
 
     const result = await Query<IStudent>(query, [...values, id])
+    delete (result[0] as any).password;
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
@@ -74,6 +77,7 @@ export const deleteStudent = async (id: number): Promise<IStudent | undefined> =
   try {
     const query = `DELETE * FROM students WHERE id = $1 RETURNING *;`;
     const result = await Query<IStudent>(query, [id]);
+    delete (result[0] as any).password;
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
