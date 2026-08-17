@@ -52,7 +52,7 @@ export const registerTeacher = async (
 }
 
 
-const registerStudent = async (
+export const registerStudent = async (
   req: Request<{}, ApiResponse<IStudent>, ICreateStudent>,
   res: Response<ApiResponse<IStudent>>
 ): Promise<Response<ApiResponse<IStudent>> | void> => {
