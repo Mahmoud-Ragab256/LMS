@@ -263,7 +263,7 @@ export interface ApiSuccessResponse<T = any> {
 }
 
 export type ApiErrorResponse = {
-  status: ApiErrorResponse;
+  status: ApiResponseStatus;
   message: string;
   errors?: any;
 };
