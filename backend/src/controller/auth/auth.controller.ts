@@ -8,8 +8,8 @@ import { loginTeacherSchema, registerTeacherSchema } from "../../validation/teac
 import z from "zod";
 import ZodError from "../../utils/zodError.js";
 import jwt from 'jsonwebtoken'
-import { createStudentSchema } from "../../validation/studentValidationSchema.js";
-import { createStudent } from "../../model/pg/studentModel.js";
+import { createStudentSchema, loginStudentSchema } from "../../validation/studentValidationSchema.js";
+import { createStudent, getStudentByEmail } from "../../model/pg/studentModel.js";
 
 
 
@@ -137,5 +137,56 @@ export const loginTeacher = async (
     const message = error instanceof Error ? error.message : "Internal Server Error"
     const statusCode = error instanceof AppError ? error.statusCode : 500
     throw new AppError(statusCode, message)
+  }
+}
+
+
+export const loginStudent = async (
+  req: Request<{}, ApiResponse<IStudent>, LoginReqBody>,
+  res: Response<ApiResponse<IStudent>>
+): Promise<Response<ApiResponse<IStudent>> | void> => {
+  try {
+    const { email, password } = req.body;
+
+    loginStudentSchema.parse({ email, password });
+
+    const student = await getStudentByEmail(email);
+
+    if (!student) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'email or password is incorrect'
+      })
+    }
+
+    const isPasswordMatching = await comparingPassword(password, student.password);
+
+    if (!isPasswordMatching) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'email or password is incorrect'
+      })
+    }
+
+    const { id, active } = student;
+
+    const token = jwt.sign({ id, active }, process.env.SECRET as string, {
+      expiresIn: '30d'
+    });
+
+    delete (student as any).password;
+
+    return res.status(200).json({
+      status: 'success',
+      jwt: token,
+      data: student
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) throw new ZodError(400, error.issues);
+
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+
+    throw new AppError(statusCode, message);
   }
 }

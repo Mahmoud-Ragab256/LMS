@@ -50,6 +50,19 @@ export const getStudentById = async (id: number): Promise<IStudent | undefined> 
   }
 }
 
+export const getStudentByEmail = async (email: string): Promise<IStudent | undefined> => {
+  try {
+    const query = `SELECT * FROM students WHERE email = $1;`;
+    const result = await Query<IStudent>(query, [email]);
+    delete (result[0] as any).password;
+    return result[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
+  }
+}
+
 export const updateStudent = async (id: number, data: IUpdateStudent): Promise<IStudent | undefined> => {
   try {
     const keys = Object.keys(data) as (keyof IUpdateStudent)[];

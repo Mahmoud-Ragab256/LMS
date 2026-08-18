@@ -33,3 +33,14 @@ export const createStudentSchema = z.object({
   }).regex(egyptianNationalIdRegex, "Egyptian national id not valid")
     .trim()
 })
+
+
+export const loginStudentSchema = z.object({
+  email: z.email({
+    error: (issue) => issue.input === undefined ? "email is required" : "not a valid email"
+  }).trim(),
+
+  password: z.string({
+    error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
+  }).trim()
+})

@@ -1,7 +1,6 @@
 import express, { type NextFunction, type Request, type Response } from 'express'
 import Query from './model/pg/connection.js';
 import mongoose from 'mongoose';
-import { registerTeacher } from './controller/auth/auth.controller.js';
 import errorHandler from './middlewares/errorHandler.middleware.js';
 import AppError from './utils/appError.js';
 import zodErrorHandler from './middlewares/zErrorHandler.middleware.js';
