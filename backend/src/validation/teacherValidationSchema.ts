@@ -2,7 +2,7 @@ import z from 'zod'
 
 const phoneRegex = /^\+[1-9]\d{1,14}$/
 
-export const createTeacherSchema = z.object({
+export const registerTeacherSchema = z.object({
   username: z.string({
     error: (issue) => issue.input === undefined ? "username is required" : "username must be string"
   }).min(5, "username must be at least 5 characters")
@@ -26,4 +26,15 @@ export const createTeacherSchema = z.object({
     .regex(/[^a-zA-Z0-9]/, "password must contain at least one special character")
     .min(8, "password must be at least 8 characters")
     .trim()
+})
+
+
+export const loginTeacherSchema = z.object({
+  email: z.email({
+    error: (issue) => issue.input === undefined ? "email is required" : "not a valid email"
+  }).trim(),
+
+  password: z.string({
+    error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
+  }).trim()
 })

@@ -263,8 +263,13 @@ export interface ApiSuccessResponse<T = any> {
   };
 }
 
-export type ApiErrorResponse = {
+export interface ApiErrorResponse {
   status: ApiResponseStatus;
   message: string;
   errors?: any;
 };
+
+export interface LoginReqBody {
+  email: string;
+  password: string;
+}

@@ -49,6 +49,17 @@ export const getTeacherById = async (id: number): Promise<ITeacher | undefined> 
     }
   }
 }
+export const getTeacherByEmail = async (email: string): Promise<ITeacher | undefined> => {
+  try {
+    const query = `SELECT * FROM teachers WHERE email = $1;`;
+    const result = await Query<ITeacher>(query, [email]);
+    return result[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(500, error.message)
+    }
+  }
+}
 
 export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<ITeacher | undefined> => {
   try {
