@@ -1,9 +1,13 @@
+import Header from "./components/Header";
+import ThemeProvider from "./context/ThemeContext";
 
 function App() {
 
   return (
     <>
-      <h1 className="bg-sky-400 text-center p-5">Hello World</h1>
+      <ThemeProvider >
+        <Header />
+      </ThemeProvider>
     </>
   )
 }

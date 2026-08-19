@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome",
+  "login": "Login",
+  "register": "Sign Up",
+  "student": "Student",
+  "teacher": "Teacher",
+  "username": "Username",
+  "email": "Email",
+  "password": "Password",
+  "phone": "Phone"
+}
