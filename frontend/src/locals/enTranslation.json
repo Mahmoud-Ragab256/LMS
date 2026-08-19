@@ -1,11 +1,17 @@
 {
   "welcome": "Welcome",
+  "have_account?": "Have an account?",
   "login": "Login",
-  "register": "Sign Up",
+  "register": "Register a",
+  "new": "new account",
+  "register p": "Please enter your details to proceed.",
+  "join": "Join",
+  "join p": "Build exceptional learning experiences and manage your courses efficiently through our state-of-the-art platform.",
   "student": "Student",
   "teacher": "Teacher",
   "username": "Username",
   "email": "Email",
   "password": "Password",
-  "phone": "Phone"
+  "phone": "Phone",
+  "nid": "National_id"
 }

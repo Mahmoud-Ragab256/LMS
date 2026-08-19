@@ -1,3 +1,45 @@
 @import "tailwindcss";
 
+@theme {
+
+
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-primary-dark: #3B82F6;
+  --color-primary-dark-hover: #60A5FA;
+
+  --color-secondary: #F97316;
+  --color-secondary-hover: #EA580C;
+  --color-secondary-dark: #FB923C;
+  --color-secondary-dark-hover: #F97316;
+
+  /* background */
+  --color-light-bg: #F8FAFC;
+  --color-dark-bg: #0F172A;
+
+  /* surface */
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #1E293B;
+
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  @apply bg-light-bg dark:bg-dark-bg
+}
+
+@layer components {
+  .btn {
+    @apply bg-primary hover:bg-primary-hover rounded-md text-white transition duration-300 cursor-pointer;
+    @apply w-full p-3;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary-hover
+  }
+
+  .btn-sm {
+    @apply w-fit;
+  }
+}
