@@ -4,10 +4,13 @@ import Input from "../components/ui/Input";
 import { useLanguage } from "../context/useLanguage";
 import Learners from '../assets/Learners.jpg'
 import Button from "../components/ui/Button";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 
 function Register() {
+
+  const queryClient = useQueryClient();
 
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const { t } = useLanguage();
@@ -24,7 +27,7 @@ function Register() {
   })
 
   return (
-    <div className="container lg:w-300 m-auto flex h-155 border border-gray-300 dark:border-gray-700 dark:text-gray-300 rounded-md text-sm">
+    <div className="container lg:w-250 m-auto flex h-155 border border-gray-300 dark:border-gray-700 dark:text-gray-300 rounded-md text-sm">
       <div className="relative hidden md:block w-full h-full">
         <div className="absolute z-30 flex flex-col justify-end inset-0 p-5 text-white">
           <h2 className="text-6xl font-bold">
