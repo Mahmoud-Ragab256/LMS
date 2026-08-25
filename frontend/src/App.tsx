@@ -1,14 +1,13 @@
-import Header from "./components/Header";
+import { RouterProvider } from "react-router-dom";
 import ThemeProvider from "./context/ThemeContext";
-import Register from "./pages/Register";
+import router from "./router";
 
 function App() {
 
   return (
     <>
       <ThemeProvider >
-        <Header />
-        <Register />
+        <RouterProvider router={router} />
       </ThemeProvider>
     </>
   )

@@ -1,4 +1,4 @@
-import type { IRegisterInput } from "../interfaces";
+import type { IInput, ILoginInput, IRegisterInput } from "../interfaces";
 
 
 export const teacherRegisterForm: IRegisterInput[] = [
@@ -61,4 +61,19 @@ export const studentRegisterForm: IRegisterInput[] = [
     type: 'text'
   },
 
+]
+
+export const loginForm: ILoginInput[] = [
+  {
+    name: 'email',
+    id: 'email',
+    placeholder: 'example@email.com',
+    type: 'text'
+  },
+  {
+    name: 'password',
+    id: 'password',
+    placeholder: 'Password',
+    type: 'password'
+  }
 ]

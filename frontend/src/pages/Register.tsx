@@ -12,14 +12,8 @@ import Learners from '../assets/Learners.jpg'
 import { registerStudentSchema, registerTeacherSchema } from "../validation/authValidation";
 import toast, { Toaster } from 'react-hot-toast';
 import Cookies from "js-cookie";
+import type { IUser } from "../interfaces";
 
-interface IUser {
-  username: string;
-  email: string;
-  password: string;
-  phone: string;
-  nid?: string;
-}
 
 function Register() {
 
@@ -65,8 +59,7 @@ function Register() {
 
   const onSubmitHandler: SubmitHandler<IUser> = async (data) => {
     const user = await postNewUser(data);
-    const token = user.jwt;
-    Cookies.set('token', token);
+    Cookies.set('token', user.token);
   }
 
 
@@ -77,7 +70,7 @@ function Register() {
       <div className="flex flex-col gap-2" key={index}>
         <label className="text-sm" htmlFor={input.id}>{input.label ? t(input.label) : t(input.name)}</label>
         <Input input={input} {...register(input.name)}></Input>
-        {errors[input.name as keyof IUser] && <InputErrorMessage message={errors[input.name]?.message} />}
+        {errors[input.name] && <InputErrorMessage message={errors[input.name]?.message} />}
       </div>
     )
   })

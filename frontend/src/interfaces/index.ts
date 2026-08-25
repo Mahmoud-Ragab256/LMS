@@ -1,10 +1,19 @@
-import type { ThemeType, userNameType } from "../types";
+import type { ThemeType, RegisterNameType, LoginNameType } from "../types";
 
 
 export interface IThemeContext {
   theme: ThemeType;
   toggleTheme: () => void;
 }
+
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+  nid?: string;
+}
+
 
 export interface IInput {
   label?: string;
@@ -15,5 +24,9 @@ export interface IInput {
 }
 
 export interface IRegisterInput extends IInput {
-  name: userNameType;
+  name: RegisterNameType;
+}
+
+export interface ILoginInput extends IInput {
+  name: LoginNameType;
 }

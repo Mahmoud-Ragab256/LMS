@@ -19,18 +19,19 @@ export const registerStudentSchema = z.object({
   }).regex(phoneRegex, "Phone number must be starting with 'country code' like '+201012345678'")
     .trim(),
 
-  password: z.string()
-    .refine((val) => {
-      const hasUpperCase = /[A-Z]/.test(val);
-      const hasLowerCase = /[a-z]/.test(val);
-      const hasNumber = /[0-9]/.test(val);
-      const hasSpecialChar = /[^a-zA-Z0-9]/.test(val);
-      const isLongEnough = val.length >= 8;
+  password: z.string({
+    error: (issue) => issue.input === undefined ? "password is required" : "not a valid password"
+  }).refine((val) => {
+    const hasUpperCase = /[A-Z]/.test(val);
+    const hasLowerCase = /[a-z]/.test(val);
+    const hasNumber = /[0-9]/.test(val);
+    const hasSpecialChar = /[^a-zA-Z0-9]/.test(val);
+    const isLongEnough = val.length >= 8;
 
-      return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isLongEnough;
-    }, {
-      message: "Password must be at-least 8 characters includes lowercase, uppercase, number and special characters"
-    }),
+    return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isLongEnough;
+  }, {
+    message: "Password must be at-least 8 characters includes lowercase, uppercase, number and special characters"
+  }).trim(),
 
   nid: z.string({
     error: (issue) => issue.input === undefined ? "national id is required" : "not a valid national id"
@@ -56,13 +57,18 @@ export const registerTeacherSchema = z.object({
     .trim(),
 
   password: z.string({
-    error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
-  }).regex(/[A-Z]/, "password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "password must contain at least one number")
-    .regex(/[^a-zA-Z0-9]/, "password must contain at least one special character")
-    .min(8, "password must be at least 8 characters")
-    .trim()
+    error: (issue) => issue.input === undefined ? "password is required" : "not a valid password"
+  }).refine((val) => {
+    const hasUpperCase = /[A-Z]/.test(val);
+    const hasLowerCase = /[a-z]/.test(val);
+    const hasNumber = /[0-9]/.test(val);
+    const hasSpecialChar = /[^a-zA-Z0-9]/.test(val);
+    const isLongEnough = val.length >= 8;
+
+    return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && isLongEnough;
+  }, {
+    message: "Password must be at-least 8 characters includes lowercase, uppercase, number and special characters"
+  }).trim(),
 });
 
 
@@ -72,6 +78,6 @@ export const loginSchema = z.object({
   }).trim(),
 
   password: z.string({
-    error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
+    error: (issue) => issue.input === undefined ? "password is required" : "not a valid password"
   }).trim()
 });

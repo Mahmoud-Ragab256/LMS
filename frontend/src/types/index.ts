@@ -1,3 +1,5 @@
 export type ThemeType = 'light' | 'dark';
 
-export type userNameType = 'username' | 'email' | 'password' | 'phone' | 'nid'
+export type RegisterNameType = 'username' | 'email' | 'password' | 'phone' | 'nid';
+
+export type LoginNameType = 'email' | 'password';
