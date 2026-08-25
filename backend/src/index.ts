@@ -6,10 +6,17 @@ import AppError from './utils/appError.js';
 import zodErrorHandler from './middlewares/zErrorHandler.middleware.js';
 import app from './server.js';
 import router from './controller/controller.router.js';
+import cors from 'cors'
 
 
 
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+}))
 
 app.use('/api/v1', router)
 

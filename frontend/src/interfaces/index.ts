@@ -1,4 +1,4 @@
-import type { ThemeType } from "../types";
+import type { ThemeType, userNameType } from "../types";
 
 
 export interface IThemeContext {
@@ -12,4 +12,8 @@ export interface IInput {
   id: string;
   placeholder: string;
   type: string;
+}
+
+export interface IRegisterInput extends IInput {
+  name: userNameType;
 }

@@ -1,7 +1,7 @@
-import type { IInput } from "../interfaces";
+import type { IRegisterInput } from "../interfaces";
 
 
-export const teacherRegisterForm: IInput[] = [
+export const teacherRegisterForm: IRegisterInput[] = [
   {
     name: 'username',
     id: 'username',
@@ -18,7 +18,7 @@ export const teacherRegisterForm: IInput[] = [
     name: 'password',
     id: 'password',
     placeholder: 'Password',
-    type: 'text'
+    type: 'password'
   },
   {
     name: 'phone',
@@ -28,7 +28,7 @@ export const teacherRegisterForm: IInput[] = [
   },
 ]
 
-export const studentRegisterForm: IInput[] = [
+export const studentRegisterForm: IRegisterInput[] = [
   {
     name: 'username',
     id: 'username',
@@ -45,7 +45,7 @@ export const studentRegisterForm: IInput[] = [
     name: 'password',
     id: 'password',
     placeholder: 'Password',
-    type: 'text'
+    type: 'password'
   },
   {
     name: 'phone',
@@ -54,7 +54,7 @@ export const studentRegisterForm: IInput[] = [
     type: 'text'
   },
   {
-    label: 'national_id',
+    label: 'National_id',
     name: 'nid',
     id: 'nid',
     placeholder: 'National_id',
