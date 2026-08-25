@@ -39,7 +39,7 @@ export const registerTeacher = async (
 
     return res.status(201).json({
       status: 'success',
-      jwt: token,
+      token: token,
       data: teacher
     });
   } catch (error) {
@@ -79,7 +79,7 @@ export const registerStudent = async (
 
     return res.status(201).json({
       status: 'success',
-      jwt: token,
+      token: token,
       data: student
     });
   } catch (error) {
@@ -127,7 +127,7 @@ export const loginTeacher = async (
 
     return res.status(200).json({
       status: 'success',
-      jwt: token,
+      token: token,
       data: teacher
     })
 
@@ -178,7 +178,7 @@ export const loginStudent = async (
 
     return res.status(200).json({
       status: 'success',
-      jwt: token,
+      token: token,
       data: student
     })
   } catch (error) {

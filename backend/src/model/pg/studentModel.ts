@@ -54,7 +54,6 @@ export const getStudentByEmail = async (email: string): Promise<IStudent | undef
   try {
     const query = `SELECT * FROM students WHERE email = $1;`;
     const result = await Query<IStudent>(query, [email]);
-    delete (result[0] as any).password;
     return result[0];
   } catch (error) {
     if (error instanceof Error) {

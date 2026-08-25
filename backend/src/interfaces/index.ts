@@ -255,7 +255,7 @@ export interface ICourseCounter {
 export interface ApiSuccessResponse<T = any> {
   status: ApiResponseStatus;
   data?: T;
-  jwt?: string;
+  token?: string;
   pagination?: {
     page: number;
     limit: number;
