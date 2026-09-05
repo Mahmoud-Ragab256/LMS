@@ -1,5 +1,5 @@
 import Query from "./connection.js";
-import type { ICourse, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
+import type { ICourse, ICourseFilter, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
 import AppError from "../../utils/appError.js";
 
 export const createCourse = async (teacherId: number, data: ICreateCourse): Promise<ICourse | undefined> => {
@@ -20,10 +20,47 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
   }
 }
 
-export const getAllCourses = async (): Promise<ICourse[] | undefined> => {
+export const getAllCourses = async (data: ICourseFilter): Promise<ICourse[] | undefined> => {
   try {
-    const query = `SELECT * FROM courses ORDER BY id DESC;`;
-    const result = await Query<ICourse>(query);
+    const { category, level, search, min_price, max_price, sort_by, order, page = 1, limit = 100 } = data;
+    let query = `SELECT * FROM courses WHERE 1 = 1`;
+    const values = [];
+
+    if (category) {
+      values.push(category);
+      query += `AND category = $${values.length}`;
+    }
+
+    if (level) {
+      values.push(level);
+      query += `AND level = $${values.length}`;
+    }
+
+    if (search) {
+      values.push(search);
+      query += `AND title ILIKE $${values.length}`;
+    }
+
+    if (min_price) {
+      values.push(min_price);
+      query += ` AND price >= $${values.length}`;
+    }
+
+    if (max_price) {
+      values.push(max_price);
+      query += ` AND price <= $${values.length}`;
+    }
+
+    const validSortFields = ['price', 'created_at', 'rating'];
+    const sortField = validSortFields.includes(sort_by) ? sort_by : 'created_at';
+    const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
+    query += ` ORDER BY ${sortField} ${sortOrder}`;
+
+    const offset = (page - 1) * limit;
+    values.push(limit, offset);
+    query += ` LIMIT $${values.length - 1} OFFSET $${values.length}`;
+
+    const result = await Query<ICourse>(query, values);
     return result;
   } catch (error) {
     if (error instanceof Error) {

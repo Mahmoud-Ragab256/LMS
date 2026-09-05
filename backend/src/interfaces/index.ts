@@ -1,4 +1,4 @@
-import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType, AssessmentAttemptStatus, ApiResponseStatus } from "../types/index.js";
+import type { EnrollmentStatusType, AssessmentType, PaymentStatusType, QuestionType, AssessmentAttemptStatus, ApiResponseStatus, CourseLevelType, CourseCategoryType, CourseFilterOrderType } from "../types/index.js";
 
 export interface ITeacher {
   id: number;
@@ -67,6 +67,8 @@ export interface ICourse {
   price: number;
   description: string;
   imgUrl: string;
+  category: CourseCategoryType;
+  level: CourseLevelType;
   updatedAt: Date | string;
   createdAt: Date | string;
 }
@@ -82,6 +84,18 @@ export interface IUpdateCourse {
   price?: number;
   description?: string;
   imgUrl?: string;
+}
+
+export interface ICourseFilter {
+  category: string;
+  level: string;
+  search: string;
+  min_price: string;
+  max_price: string;
+  sort_by: string;
+  order: CourseFilterOrderType;
+  page: number;
+  limit: number
 }
 
 

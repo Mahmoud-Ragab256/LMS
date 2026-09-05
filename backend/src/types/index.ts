@@ -2,6 +2,12 @@ import type { ApiErrorResponse, ApiSuccessResponse } from "../interfaces/index.j
 
 export type QuestionType = 'mcq' | 'true_false' | 'essay' | 'matching';
 
+export type CourseLevelType = 'beginner' | 'intermediate' | 'advanced' | 'all_levels';
+
+export type CourseCategoryType = 'physics' | 'chemistry' | 'math' | 'arabic' | 'english' | 'second_language' | 'science' | 'biology' | 'geology' | 'applied_math' | 'pure_math' | 'history' | 'geography' | 'philosophy' | 'psychology' | 'other';
+
+export type CourseFilterOrderType = 'asc' | 'desc';
+
 export type PaymentStatusType = 'pending' | 'success' | 'failed' | 'refunded';
 
 export type EnrollmentStatusType = 'pending' | 'active' | 'canceled' | 'blocked';
