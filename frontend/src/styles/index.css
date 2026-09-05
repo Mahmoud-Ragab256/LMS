@@ -39,6 +39,6 @@ body {
   }
 
   .btn-sm {
-    @apply w-fit;
+    @apply w-fit py-1.5 px-3;
   }
 }
