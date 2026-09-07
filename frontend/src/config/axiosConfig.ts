@@ -14,9 +14,10 @@ API.interceptors.request.use(
   (request) => {
     const token = Cookies.get('token');
 
-    if (token) {
-      request.headers.Authorization = `Bearer ${token}`;
+    if (!token) {
+      return request;
     }
+    request.headers.Authorization = `Bearer ${token}`;
     return request;
   },
   (error) => { return Promise.reject(error) }

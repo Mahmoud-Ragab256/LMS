@@ -6,6 +6,12 @@ export interface IThemeContext {
   toggleTheme: () => void;
 }
 
+export interface IAuthContext {
+  isAuthenticated: boolean;
+  logout: () => void;
+  checkAuth: () => boolean;
+}
+
 export interface IUser {
   username: string;
   email: string;

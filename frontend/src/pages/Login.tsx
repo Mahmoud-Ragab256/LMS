@@ -11,13 +11,15 @@ import { useMutation } from "@tanstack/react-query";
 import API from "../config/axiosConfig";
 import Cookies from "js-cookie";
 import toast, { Toaster } from "react-hot-toast";
-import { Navigate, redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 
 function Login() {
 
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const { t } = useLanguage();
+  const { checkAuth } = useAuth();
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(loginSchema) });
@@ -50,6 +52,7 @@ function Login() {
     Cookies.set('token', res.token);
     delete res.token;
     localStorage.setItem("user", JSON.stringify(res.data));
+    checkAuth();
     navigate('/');
   }
 

@@ -14,12 +14,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import Cookies from "js-cookie";
 import type { IUser } from "../interfaces";
 import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 
 function Register() {
 
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const { t } = useLanguage();
+  const { checkAuth } = useAuth();
   const navigate = useNavigate();
 
   const currentSchema = isTeacher ? registerTeacherSchema : registerStudentSchema;
@@ -64,6 +66,7 @@ function Register() {
     Cookies.set('token', res.token);
     delete res.token;
     localStorage.setItem("user", JSON.stringify(res.data));
+    checkAuth();
     navigate('/');
   }
 
