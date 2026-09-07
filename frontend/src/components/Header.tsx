@@ -30,7 +30,7 @@ export default function Header() {
         <IoMenu className='text-3xl cursor-pointer md:hidden' onClick={() => setIsHidden(false)} />
         <div className="hidden md:flex items-center gap-5">
           <div className='flex items-center gap-2 border border-dark-bg text-dark-bg  dark:border-gray-300 dark:text-gray-300 p-1 px-3 rounded-full'>
-            <input name='search' placeholder={t("search")} id='search' className='outline-0 text-secondary' />
+            <input name='search' placeholder={t("search")} id='search' className='outline-0' />
             <label htmlFor='search'><IoIosSearch /></label>
           </div>
           <nav className="flex items-center gap-5">
