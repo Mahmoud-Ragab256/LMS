@@ -2,78 +2,103 @@ import { NavLink } from 'react-router';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/useLanguage';
 import { FaGraduationCap } from "react-icons/fa";
-import { CiLight } from "react-icons/ci";
 import { PiMoonDuotone } from "react-icons/pi";
-import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
+import { BsFillSunFill } from "react-icons/bs";
+import { IoIosSearch } from "react-icons/io";
+import { IoMenu } from "react-icons/io5";
+import { IoCloseSharp } from "react-icons/io5";
 import Button from './ui/Button';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const { t, currentLang, changeLanguage } = useLanguage();
+  const [isHidden, setIsHidden] = useState<boolean>(true);
+
+  const hidden = isHidden ? `hidden` : null;
+
+  const token = Cookies.get('token');
 
   return (
-    <header className="flex items-center justify-between p-4 px-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700">
+    <header dir='ltr' className="flex items-center justify-between p-4 px-8 bg-white dark:bg-dark-bg text-dark-bg dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
       <NavLink to='/' className='flex items-center gap-2'>
         <span className='flex justify-center items-center w-10 h-10 rounded-full bg-primary text-2xl text-white'><FaGraduationCap /></span>
         <h1 className="text-lg font-bold text-primary">EDU FLOW</h1>
       </NavLink>
 
-      <div className="flex items-center gap-5">
-        <nav className="flex items-center gap-2">
-          <NavLink to='explore' className='hover:text-primary transition duration-250'>Explore</NavLink>
-          <NavLink to='my-learning' className='hover:text-primary transition duration-250'>My Learning</NavLink>
-        </nav>
-        <div className='flex items-center gap-2'>
-          <Button
-            onClick={toggleTheme}
-            className='btn-sm p-1 bg-transparent text-secondary text-xl'
-          >
-            {theme === 'light' ? <PiMoonDuotone /> : <BsFillSunFill />}
-          </Button>
+      <div>
+        <IoMenu className='text-3xl cursor-pointer md:hidden' onClick={() => setIsHidden(false)} />
+        <div className="hidden md:flex items-center gap-5">
+          <div className='flex items-center gap-2 border border-dark-bg text-dark-bg  dark:border-gray-300 dark:text-gray-300 p-1 px-3 rounded-full'>
+            <input name='search' placeholder={t("search")} id='search' className='outline-0 text-secondary' />
+            <label htmlFor='search'><IoIosSearch /></label>
+          </div>
+          <nav className="flex items-center gap-5">
+            <NavLink to='explore' className='hover:text-primary transition duration-250'>{t("explore")}</NavLink>
+            {token ? <NavLink to='my-learning' className='hover:text-primary transition duration-250'>{t("my learning")}</NavLink> : null}
 
-          <Button
-            onClick={() => changeLanguage(currentLang === 'ar' ? 'en' : 'ar')}
-            className="btn-sm btn-secondary"
-          >
-            {currentLang === 'ar' ? 'EN' : 'AR'}
-          </Button>
 
-          <NavLink to='/login' ><Button className='btn-sm bg-transparent border border-primary text-primary hover:bg-primary hover:text-white'>{t('login')}</Button></NavLink>
-          {/* <NavLink to='/register'><Button className='btn-sm bg-transparent border border-primary text-primary'>{t('register')}</Button></NavLink> */}
+
+          </nav>
+          <div className='flex items-center gap-2'>
+            <Button
+              onClick={toggleTheme}
+              className='btn-sm p-1 bg-transparent text-secondary text-xl'
+            >
+              {theme === 'light' ? <PiMoonDuotone /> : <BsFillSunFill />}
+            </Button>
+
+            <Button
+              onClick={() => changeLanguage(currentLang === 'ar' ? 'en' : 'ar')}
+              className="btn-sm btn-secondary"
+            >
+              {currentLang === 'ar' ? 'EN' : 'AR'}
+            </Button>
+
+            {token ? <NavLink to='/login'><Button className='btn-sm bg-red-600'
+              onClick={() => {
+                Cookies.remove("token");
+                localStorage.removeItem("user");
+              }
+              }>{t('logout')}</Button></NavLink>
+              : <NavLink to='/login' ><Button className='btn-outline btn-sm '>{t('login')}</Button></NavLink>}
+          </div>
         </div>
       </div>
+      <div className={`fixed top-0 right-0 flex flex-col items-end gap-5 p-5 ${hidden} bg-white dark:bg-gray-900 dark:text-gray-300 h-full z-50 border-l border-gray-200 dark:border-gray-700`}>
+        <div className='flex items-center justify-between w-full'>
+          <IoCloseSharp className='text-2xl cursor-pointer' onClick={() => setIsHidden(true)} />
+          <div className='flex items-center gap-2'>
+            <Button
+              onClick={toggleTheme}
+              className='btn-sm p-1 bg-transparent text-secondary text-xl'
+            >
+              {theme === 'light' ? <PiMoonDuotone /> : <BsFillSunFill />}
+            </Button>
+
+            <Button
+              onClick={() => changeLanguage(currentLang === 'ar' ? 'en' : 'ar')}
+              className="btn-sm btn-secondary"
+            >
+              {currentLang === 'ar' ? 'EN' : 'AR'}
+            </Button>
+          </div>
+
+        </div>
+        <div className='flex items-center gap-2 border border-dark-bg text-dark-bg dark:border-gray-300 dark:text-gray-300 p-1 px-3 rounded-full'>
+          <input name='search' placeholder={t("search")} id='search' className='outline-0 text-secondary' />
+          <label htmlFor='search'><IoIosSearch /></label>
+        </div>
+        <nav className="flex items-center gap-5">
+          <NavLink to='explore' className='hover:text-primary transition duration-250'>{t("explore")}</NavLink>
+          {token ? <NavLink to='my-learning' className='hover:text-primary transition duration-250'>{t("my learning")}</NavLink> : null}
+
+
+
+        </nav>
+        <NavLink to='/login' ><Button className='btn-outline btn-sm '>{t('login')}</Button></NavLink>
+      </div>
     </header>
-    // <header className="flex items-center justify-between p-4 px-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700">
-    //   <NavLink to='/' className='flex items-center gap-2'>
-    //     <span className='flex justify-center items-center w-10 h-10 rounded-full bg-primary text-2xl text-white'><FaGraduationCap /></span>
-    //     <h1 className="text-lg font-bold text-primary">EDU FLOW</h1>
-    //   </NavLink>
-
-    //   <div className="flex items-center gap-3">
-    //     <nav className="flex items-center gap-3">
-    //       <NavLink to='explore' className='hover:text-primary transition duration-250'>Explore</NavLink>
-    //       <NavLink to='my-learning' className='hover:text-primary transition duration-250'>My Learning</NavLink>
-    //     </nav>
-    //     <div className='flex items-center gap-2'>
-    //       <button
-    //         onClick={toggleTheme}
-    //         className="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-    //       >
-    //         {theme === 'light' ? '🌙' : '☀️'}
-    //       </button>
-
-    //       <button
-    //         onClick={() => changeLanguage(currentLang === 'ar' ? 'en' : 'ar')}
-    //         className="px-3 py-1 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
-    //       >
-    //         {currentLang === 'ar' ? 'EN' : 'AR'}
-    //       </button>
-    //     </div>
-    //     <div className='flex items-center gap-2'>
-    //       <NavLink to='/login' ><Button className='btn-sm btn-secondary'>{t('login')}</Button></NavLink>
-    //       <NavLink to='/register'><Button className='btn-sm bg-transparent border border-secondary text-secondary'>{t('register')}</Button></NavLink>
-    //     </div>
-    //   </div>
-    // </header>
   );
 }

@@ -13,12 +13,14 @@ import { registerStudentSchema, registerTeacherSchema } from "../validation/auth
 import toast, { Toaster } from 'react-hot-toast';
 import Cookies from "js-cookie";
 import type { IUser } from "../interfaces";
+import { useNavigate } from "react-router";
 
 
 function Register() {
 
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const currentSchema = isTeacher ? registerTeacherSchema : registerStudentSchema;
   const { register, handleSubmit, formState: { errors } } = useForm<IUser>({ resolver: zodResolver(currentSchema) });
@@ -58,8 +60,11 @@ function Register() {
   })
 
   const onSubmitHandler: SubmitHandler<IUser> = async (data) => {
-    const user = await postNewUser(data);
-    Cookies.set('token', user.token);
+    const res = await postNewUser(data);
+    Cookies.set('token', res.token);
+    delete res.token;
+    localStorage.setItem("user", JSON.stringify(res.data));
+    navigate('/');
   }
 
 

@@ -13,5 +13,8 @@
   "email": "Email",
   "password": "Password",
   "phone": "Phone",
-  "nid": "National_id"
+  "nid": "National_id",
+  "my learning": "My Learning",
+  "explore": "Explore",
+  "search": "search"
 }

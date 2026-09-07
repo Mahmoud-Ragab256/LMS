@@ -11,12 +11,14 @@ import { useMutation } from "@tanstack/react-query";
 import API from "../config/axiosConfig";
 import Cookies from "js-cookie";
 import toast, { Toaster } from "react-hot-toast";
+import { Navigate, redirect, useNavigate } from "react-router";
 
 
 function Login() {
 
   const [isTeacher, setIsTeacher] = useState<boolean>(false);
   const { t } = useLanguage();
+  const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(loginSchema) });
 
@@ -44,8 +46,11 @@ function Login() {
 
 
   const onSubmit: SubmitHandler<{ email: string, password: string }> = async (data) => {
-    const user = await loginUser(data);
-    Cookies.set('token', user.token);
+    const res = await loginUser(data);
+    Cookies.set('token', res.token);
+    delete res.token;
+    localStorage.setItem("user", JSON.stringify(res.data));
+    navigate('/');
   }
 
   const renderInputs = loginForm.map((input, index) => {
