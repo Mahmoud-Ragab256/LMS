@@ -1,7 +1,7 @@
 import Button from "../components/ui/Button";
 import { FaArrowRight } from "react-icons/fa";
-import { FaGraduationCap } from "react-icons/fa";
-import { FaArrowRightLong } from "react-icons/fa6";
+import { FaCompass, FaGraduationCap } from "react-icons/fa";
+import { FaArrowRightLong, FaUserCheck, FaMedal } from "react-icons/fa6";
 import img1 from '../assets/profile-1.jpg';
 import img2 from '../assets/profile-2.jpg';
 import img3 from '../assets/profile-3.jpeg';
@@ -72,7 +72,7 @@ function Home({ }: IProps) {
     <section className="m-auto p-5 py-25 flex flex-col gap-5 items-center sm:items-start dark:text-gray-300">
       <h4 className="text-4xl font-bold">Featured Learning Path</h4>
       <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-5">
-        <p className="text-sm max-w-100">Curated programs designed by industry experts to take you from beginner to professional in months, not years.</p>
+        <p className="text-sm max-w-100 text-center sm:text-start">Curated programs designed by industry experts to take you from beginner to professional in months, not years.</p>
         <a className="flex items-center gap-2 p-2 rounded-full text-primary cursor-pointer hover:scale-103 transition duration-300" href="/courses">
           View All Courses <FaArrowRightLong />
         </a>
@@ -131,6 +131,34 @@ function Home({ }: IProps) {
             </div>
 
           </div>
+        </div>
+      </div>
+    </section>
+    <section className="m-auto p-5 py-25 flex flex-col gap-5 items-center text-center dark:text-gray-300">
+      <h4 className="text-4xl font-bold">Your Path To Success</h4>
+      <p className="max-w-150">A streamlined learning process designed to keep you motivated and on track towards your career goals.</p>
+      <div className="relative w-full p-5 flex flex-col items-center md:flex-row md:items-start gap-10 justify-between">
+        <span className="hidden md:block absolute w-[70%] h-1 left-1/2 top-21 -translate-1/2 bg-gray-200 dark:bg-gray-800 rounded-full -z-10"></span>
+        <div className="p-5 flex flex-col items-center gap-5">
+          <span className="flex items-center justify-center w-20 h-20 rounded-xl text-4xl bg-gray-50 dark:bg-gray-800 text-primary shadow-lg shadow-black/10 dark:shadow-md dark:shadow-black/10 cursor-pointer hover:scale-105 transition duration-300">
+            <FaCompass />
+          </span>
+          <h6 className="text-2xl font-medium">1. Explore</h6>
+          <p className="max-w-100">Explore hundreds of curated courses across tech, business, and design.</p>
+        </div>
+        <div className="p-5 flex flex-col items-center gap-5">
+          <span className="flex items-center justify-center w-20 h-20 rounded-xl text-4xl bg-gray-50 dark:bg-gray-800 text-primary shadow-lg shadow-black/10 dark:shadow-md dark:shadow-black/10 cursor-pointer hover:scale-105 transition duration-300">
+            <FaUserCheck />
+          </span>
+          <h6 className="text-2xl font-medium">2. Enroll & Learn</h6>
+          <p className="max-w-100">Engage with interactive content, real-world projects, and peer discussion.</p>
+        </div>
+        <div className="p-5 flex flex-col items-center gap-5">
+          <span className="flex items-center justify-center w-20 h-20 rounded-xl text-4xl bg-gray-50 dark:bg-gray-800 text-primary shadow-lg shadow-black/10 dark:shadow-md dark:shadow-black/10 cursor-pointer hover:scale-105 transition duration-300">
+            <FaMedal />
+          </span>
+          <h6 className="text-2xl font-medium">3. Certify & Grow</h6>
+          <p className="max-w-100">Earn industry recognized certificates and unlock new career opportunities.</p>
         </div>
       </div>
     </section>
