@@ -64,6 +64,7 @@ export interface IUpdateStudent {
 export interface ICourse {
   id: number;
   teacher_id: number;
+  title: string;
   price: number;
   description: string;
   imgUrl: string;
@@ -75,6 +76,7 @@ export interface ICourse {
 
 export interface ICreateCourse {
   teacherId: number;
+  title: string;
   price: number;
   description: string;
   imgUrl: string;
@@ -82,6 +84,7 @@ export interface ICreateCourse {
 
 export interface IUpdateCourse {
   price?: number;
+  title: string;
   description?: string;
   imgUrl?: string;
 }

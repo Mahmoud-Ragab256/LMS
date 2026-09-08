@@ -4,13 +4,13 @@ import AppError from "../../utils/appError.js";
 
 export const createCourse = async (teacherId: number, data: ICreateCourse): Promise<ICourse | undefined> => {
   try {
-    const { price, description, imgUrl } = data;
+    const { price, title, description, imgUrl } = data;
     const query = `
-    INSERT INTO courses (price, description, img_url, teacher_id)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO courses (price, title, description, img_url, teacher_id)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
     `;
-    const values = [price, description, imgUrl, teacherId];
+    const values = [price, title, description, imgUrl, teacherId];
     const result = await Query<ICourse>(query, values);
     return result[0];
   } catch (error) {

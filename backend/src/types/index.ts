@@ -2,7 +2,7 @@ import type { ApiErrorResponse, ApiSuccessResponse } from "../interfaces/index.j
 
 export type QuestionType = 'mcq' | 'true_false' | 'essay' | 'matching';
 
-export type CourseLevelType = 'beginner' | 'intermediate' | 'advanced' | 'all_levels';
+export type CourseLevelType = 'primary' | 'preparatory' | 'secondary';
 
 export type CourseCategoryType = 'physics' | 'chemistry' | 'math' | 'arabic' | 'english' | 'second_language' | 'science' | 'biology' | 'geology' | 'applied_math' | 'pure_math' | 'history' | 'geography' | 'philosophy' | 'psychology' | 'other';
 
