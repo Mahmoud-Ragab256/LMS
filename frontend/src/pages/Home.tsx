@@ -1,7 +1,7 @@
 import Button from "../components/ui/Button";
 import { FaArrowRight } from "react-icons/fa";
 import { FaCompass, FaGraduationCap } from "react-icons/fa";
-import { FaArrowRightLong, FaUserCheck, FaMedal } from "react-icons/fa6";
+import { FaArrowRightLong, FaUserCheck, FaMedal, FaRegCopyright } from "react-icons/fa6";
 import img1 from '../assets/profile-1.jpg';
 import img2 from '../assets/profile-2.jpg';
 import img3 from '../assets/profile-3.jpeg';
@@ -161,6 +161,18 @@ function Home({ }: IProps) {
           <p className="max-w-100">Earn industry recognized certificates and unlock new career opportunities.</p>
         </div>
       </div>
+    </section>
+    <section className="m-auto p-10 py-10 flex flex-col items-center gap-10 md:flex-row md:justify-between bg-gray-300 dark:bg-gray-800 dark:text-gray-300 text-md text-nowrap">
+      <h3 className="text-primary font-bold text-2xl">EDU FLOW</h3>
+      <div className="flex justify-center flex-wrap gap-5">
+        <p className="hover:text-primary transition duration-300 cursor-pointer">Privacy Policy</p>
+        <p className="hover:text-primary transition duration-300 cursor-pointer">Terms of Service</p>
+        <p className="hover:text-primary transition duration-300 cursor-pointer">Help Center</p>
+        <p className="hover:text-primary transition duration-300 cursor-pointer">Contact Support</p>
+      </div>
+      <p className="flex items-center text-sm gap-1">
+        <FaRegCopyright className="inline-block" />  2026  EDU FLOW Global, All rights reserved.
+      </p>
     </section>
   </>
   )
