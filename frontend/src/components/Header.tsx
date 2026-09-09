@@ -20,7 +20,7 @@ export default function Header() {
   const hidden = isHidden ? `hidden` : null;
 
   return (
-    <header dir='ltr' className="fixed w-full z-1000 h-20 flex items-center justify-between p-4 px-8 bg-white dark:bg-dark-bg text-dark-bg dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 whitespace-nowrap">
+    <header dir='ltr' className="fixed top-0 w-full z-1000 h-20 flex items-center justify-between p-4 px-8 bg-white dark:bg-dark-bg text-dark-bg dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 whitespace-nowrap">
       <NavLink to='/' className='flex items-center gap-2'>
         <span className='flex justify-center items-center w-10 h-10 rounded-full bg-primary text-2xl text-white'><FaGraduationCap /></span>
         <h1 className="text-lg font-bold text-primary">EDU FLOW</h1>
