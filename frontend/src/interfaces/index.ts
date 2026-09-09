@@ -1,4 +1,4 @@
-import type { ThemeType, RegisterNameType, LoginNameType } from "../types";
+import type { ThemeType, RegisterNameType, LoginNameType, CourseCategoryType, CourseLevelType } from "../types";
 
 
 export interface IThemeContext {
@@ -35,4 +35,19 @@ export interface IRegisterInput extends IInput {
 
 export interface ILoginInput extends IInput {
   name: LoginNameType;
+}
+
+export interface ICourseRes {
+  id: number;
+  teacher_id: number;
+  title: string;
+  price: number;
+  description: string;
+  imgUrl: string;
+  category: CourseCategoryType;
+  level: CourseLevelType;
+  teacherName: string;
+  teacherImg: string;
+  updatedAt: Date | string;
+  createdAt: Date | string;
 }

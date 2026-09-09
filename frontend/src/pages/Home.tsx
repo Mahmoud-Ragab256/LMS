@@ -10,15 +10,28 @@ import Ai_Data from '../assets/AI-Data.jpg';
 import { MdOutlineVerified } from "react-icons/md";
 import { useLanguage } from "../context/useLanguage";
 import i18n from "../i18next";
+import CourseContainer from "../components/containers/CourseContainer";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-interface IProps {
 
-}
 
-function Home({ }: IProps) {
+function Home() {
 
   const { t } = useLanguage();
+  const [courses, setCourses] = useState([]);
   const dir = i18n.dir();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const response = await axios.get('http://localhost:3000/api/v1/courses');
+      // console.log(response.data.data)
+      setCourses(response.data.data);
+    }
+
+    fetchCourses()
+  }, [])
+
 
   return (
     <>
@@ -84,62 +97,7 @@ function Home({ }: IProps) {
             {t("View All Courses")} {dir === "ltr" ? <FaArrowRightLong /> : <FaArrowLeftLong />}
           </a>
         </div>
-        <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-md shadow-black/5 dark:shadow-white/5">
-            <a href="/courses/id"><img src={Physics} alt="Physics" className="w-full" /></a>
-            <div className="p-4">
-              <h5 className="text-lg font-medium">Featured Learning Path</h5>
-              <p className="text-sm">Curated programs designed by industry experts to take you from beginner</p>
-            </div>
-            <hr className="text-gray-100 dark:text-gray-700" />
-            <div className="p-4 flex items-center justify-between text-md">
-              <span className="block">$300</span>
-              <div className="flex items-center gap-2">
-                <h6>Mahmoud Ragab</h6>
-                <span className="block w-10 h-10 rounded-full overflow-hidden">
-                  <img src={img1} alt="teacher" className="w-full h-full object-cover" />
-                </span>
-              </div>
-
-            </div>
-          </div>
-          <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-lg shadow-black/5 dark:shadow-md dark:shadow-white/5">
-            <a href="/courses/id"><img src={Physics} alt="Physics" className="w-full" /></a>
-            <div className="p-4">
-              <h5 className="text-lg font-medium">Featured Learning Path</h5>
-              <p className="text-sm">Curated programs designed by industry experts to take you from beginner</p>
-            </div>
-            <hr className="text-gray-100 dark:text-gray-700" />
-            <div className="p-4 flex items-center justify-between text-md">
-              <span className="block">$300</span>
-              <div className="flex items-center gap-2">
-                <h6>Mahmoud Ragab</h6>
-                <span className="block w-10 h-10 rounded-full overflow-hidden">
-                  <img src={img1} alt="teacher" className="w-full h-full object-cover" />
-                </span>
-              </div>
-
-            </div>
-          </div>
-          <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-lg shadow-black/5 dark:shadow-md dark:shadow-white/5">
-            <a href="/courses/id"><img src={Physics} alt="Physics" className="w-full" /></a>
-            <div className="p-4">
-              <h5 className="text-lg font-medium">Featured Learning Path</h5>
-              <p className="text-sm">Curated programs designed by industry experts to take you from beginner</p>
-            </div>
-            <hr className="text-gray-100 dark:text-gray-700" />
-            <div className="p-4 flex items-center justify-between text-md">
-              <span className="block">$300</span>
-              <div className="flex items-center gap-2">
-                <h6>Mahmoud Ragab</h6>
-                <span className="block w-10 h-10 rounded-full overflow-hidden">
-                  <img src={img1} alt="teacher" className="w-full h-full object-cover" />
-                </span>
-              </div>
-
-            </div>
-          </div>
-        </div>
+        <CourseContainer courses={courses.slice(0, 4)} />
       </section>
       <section className="m-auto p-5 py-25 flex flex-col gap-5 items-center text-center dark:text-gray-300">
         <h4 className="text-4xl font-bold">{t("Your Path to Academic Success")}</h4>
