@@ -12,7 +12,7 @@ function CourseContainer({ courses }: IProps) {
     return (
       <>
         <div key={course.id} className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-md shadow-black/5 dark:shadow-white/5">
-          <a href="/courses/id" className="h-60"><img src={course.imgUrl} alt="Physics" className="w-full h-full" /></a>
+          <a href={`/courses/${course.id}`} className="h-60"><img src={course.imgUrl} alt="Physics" className="w-full h-full" /></a>
           <div className="p-4">
             <h5 className="text-lg font-medium line-clamp-1">{course.title}</h5>
             <p className="text-sm line-clamp-2">{course.description}</p>

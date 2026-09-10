@@ -30,12 +30,12 @@ body {
 
 @layer components {
   .btn {
-    @apply bg-primary hover:bg-primary-hover rounded-md text-white transition duration-300 cursor-pointer;
+    @apply bg-primary hover:bg-primary-hover rounded-lg text-white transition duration-300 cursor-pointer;
     @apply w-full p-3;
   }
 
   .btn-outline {
-    @apply bg-transparent hover:bg-primary rounded-md text-primary hover:text-white border border-primary transition duration-300 cursor-pointer;
+    @apply bg-transparent hover:bg-primary rounded-lg text-primary hover:text-white border border-primary transition duration-300 cursor-pointer;
   }
 
   .btn-secondary {
@@ -43,7 +43,7 @@ body {
   }
 
   .btn-secondary-outline {
-    @apply bg-transparent hover:bg-secondary rounded-md text-secondary hover:text-white border border-secondary transition duration-300 cursor-pointer;
+    @apply bg-transparent hover:bg-secondary rounded-lg text-secondary hover:text-white border border-secondary transition duration-300 cursor-pointer;
   }
 
   .btn-sm {
