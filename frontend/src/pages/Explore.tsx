@@ -6,6 +6,8 @@ import { VscSettingsCompact } from "react-icons/vsc";
 import { categories, levels } from "../data/categories";
 import { IoMdCheckmark } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
+import TeacherContainer from "../components/containers/TeacherContainer";
+
 
 
 function Explore() {
@@ -51,6 +53,17 @@ function Explore() {
           <BiFilterAlt className="text-primary text-xl" /> {t("Displayed Results")} :
         </div>
         <span className="text-primary cursor-pointer">{t("Reset")}</span>
+      </div>
+      <div className="py-5 space-y-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xl font-medium">
+            <span className="block w-3 h-8 rounded-xl bg-primary"></span>
+            {t('Elite')} {t('Teachers')}
+          </div>
+          <Button className="btn-sm">{t("View All")}</Button>
+        </div>
+
+        <TeacherContainer />
       </div>
       {/* <div className="flex items-center justify-center flex-wrap gap-3">
         {renderLevels}
