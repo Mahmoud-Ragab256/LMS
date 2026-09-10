@@ -3,10 +3,11 @@ import { IoIosSearch } from "react-icons/io";
 import Button from "../components/ui/Button";
 import { useLanguage } from "../context/useLanguage";
 import { VscSettingsCompact } from "react-icons/vsc";
-import { categories, levels } from "../data/categories";
+import { categories } from "../data/categories";
 import { IoMdCheckmark } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
+import CourseContainer from "../components/containers/CourseContainer";
 
 
 
@@ -22,7 +23,7 @@ function Explore() {
 
 
 
-  const renderLevels = categories.map((level, index) => {
+  const renderCategories = categories.map((level, index) => {
     return (
       <>
         {pl === level ? <span key={index} className="p-1 px-5 bg-primary text-white shadow shadow-black/5 rounded-full flex items-center gap-2 cursor-pointer">{level} <IoMdCheckmark /></span>
@@ -64,6 +65,18 @@ function Explore() {
         </div>
 
         <TeacherContainer />
+      </div>
+
+      <div className="py-5 space-y-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xl font-medium">
+            <span className="block w-3 h-8 rounded-xl bg-secondary"></span>
+            {t('Latest and most prominent courses')}
+          </div>
+          <Button className="btn-sm btn-secondary">{t("View All")}</Button>
+        </div>
+
+        <CourseContainer courses={[]} />
       </div>
       {/* <div className="flex items-center justify-center flex-wrap gap-3">
         {renderLevels}
