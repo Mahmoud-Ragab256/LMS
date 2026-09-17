@@ -1,19 +1,20 @@
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { IoIosSearch } from "react-icons/io";
 import Button from "../components/ui/Button";
 import { useLanguage } from "../context/useLanguage";
 import { VscSettingsCompact } from "react-icons/vsc";
-import { categories } from "../data/categories";
+import { categories, levels } from "../data/categories";
 import { IoMdCheckmark } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
 import CourseContainer from "../components/containers/CourseContainer";
-
+import i18n from "../i18next";
 
 
 function Explore() {
 
   const { t } = useLanguage();
+  const dir = i18n.dir();
 
   let pr = 'all'
   let pl = 'Physics'
@@ -23,11 +24,21 @@ function Explore() {
 
 
 
-  const renderCategories = categories.map((level, index) => {
+  const renderCategories = categories.map((category, index) => {
     return (
       <>
-        {pl === level ? <span key={index} className="p-1 px-5 bg-primary text-white shadow shadow-black/5 rounded-full flex items-center gap-2 cursor-pointer">{level} <IoMdCheckmark /></span>
-          : <span key={index} className="p-1 px-5 bg-gray-100 shadow shadow-black/5 rounded-full cursor-pointer">{level}</span>
+        {pl === category ? <span key={index} className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer">{t(category)} <IoMdCheckmark /></span>
+          : <span key={index} className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer">{t(category)}</span>
+        }
+      </>
+    )
+  })
+
+  const renderLevels = levels.map((level, index) => {
+    return (
+      <>
+        {pl === level ? <span key={index} className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer">{t(level)} <IoMdCheckmark /></span>
+          : <span key={index} className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer">{t(level)}</span>
         }
       </>
     )
@@ -42,7 +53,125 @@ function Explore() {
           <label className="flex items-center justify-center p-1 cursor-pointer" htmlFor="explore-search"><IoIosSearch /></label>
           <input type="text" name="search" id="explore-search" placeholder={t('Search for a course, subject, or teacher.')} className="w-full h-full outline-0" />
         </span>
-        <span className="p-2 bg-primary rounded-xl text-white text-2xl flex items-center justify-center cursor-pointer"><VscSettingsCompact /></span>
+        <div className="relative p-2 bg-primary rounded-xl flex items-center justify-center cursor-pointer">
+          <VscSettingsCompact className="text-white text-2xl" />
+          <div className="absolute -bottom-152 inset-e-0 w-60 h-150 rounded-xl shadow bg-indigo-100/95 dark:bg-indigo-950/90 text-sm font-medium p-5 cursor-auto overflow-y-scroll scrollbar-thumb-gray-100 dark:scrollbar-thumb-gray-700">
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <span className="block">{t("Filter By")} :</span>
+                <div className="flex flex-col gap-2 font-normal">
+                  <label><input type="radio" name="filter" /> {t("Courses")}</label>
+                  <label><input type="radio" name="filter" /> {t("Teachers")}</label>
+                  <label><input type="radio" name="filter" /> {t("All")}</label>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="flex items-center cursor-pointer">{t("Category")} </span>
+                <div className="flex gap-1 flex-wrap space-y-0">
+                  {renderCategories}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="flex items-center cursor-pointer">{t("Level")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
+                <div className="flex gap-1 flex-wrap space-y-0">
+                  {renderLevels}
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <span className="flex items-center cursor-pointer mb-2">{t("Price")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
+                <div className="flex items-center flex-wrap gap-2">
+                  <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
+                    <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">100 {t("EGP")} - 800 {t("EGP")}</span>
+                  </div>
+
+                  <div className="relative w-full h-6 flex items-center">
+                    <div className="absolute w-full h-1.5 bg-gray-100 rounded-full"></div>
+                    <div className="absolute right-[20%] left-[30%] h-1.5 bg-blue-600 rounded-full"></div>
+                    <div className="absolute right-[20%] w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow cursor-pointer"></div>
+                    <div className="absolute left-[30%] w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow cursor-pointer"></div>
+                  </div>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>{t("Min")}</span>
+                  <span>{t("Max")}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col text-right w-full">
+                <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5">
+
+                  <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
+                    <span className="flex items-center gap-1">
+                      {t("Sort By")} :
+                      <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <MdKeyboardArrowDown className="text-2xl" />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out">
+                    <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
+                      {t("Newest")}
+                    </div>
+                    <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                      {t("Oldest")}
+                    </div>
+                    <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                      {t("Max")} {t("Price")}
+                    </div>
+                    <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                      {t("Min")} {t("Price")}
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div className="space-y-3">
+                <span className="flex items-center cursor-pointer">{t("Teacher")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
+                <div className="flex flex-col gap-1">
+                  <div className="space-x-1">
+                    <input type="checkbox" id="active" name="activation" />
+                    <label htmlFor="active">active</label>
+                  </div>
+                  <div className="space-x-1">
+                    <input type="checkbox" id="inactive" name="activation" />
+                    <label htmlFor="inactive">inactive</label>
+                  </div>
+                </div>
+                <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5">
+
+                  <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
+                    <span className="flex items-center gap-1">
+                      {t("Sort By")} :
+                      <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <MdKeyboardArrowDown className="text-2xl" />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out">
+                    <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
+                      {t("Newest")}
+                    </div>
+                    <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                      {t("Oldest")}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex items-center p-1 gap-1 bg-gray-100 rounded-xl dark:bg-gray-800">
         <Button className={`p-1 ${pr === 'all' ? 'bg-surface-light dark:bg-dark-bg text-primary shadow shadow-black/5 dark:shadow-gray-300/5' : 'bg-transparent text-gray-700 dark:text-gray-300'}`}>{t("All")} <span>(240)</span></Button>
