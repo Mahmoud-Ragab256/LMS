@@ -11,8 +11,6 @@ function TeacherContainer({ }: IProps) {
   const { t } = useLanguage();
 
 
-  // grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
-  // flex items-center flex-wrap
   return (
     <>
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 justify-center gap-5">
@@ -34,7 +32,7 @@ function TeacherContainer({ }: IProps) {
                 <span>6</span>
               </div>
               <div className="text-green-600">
-                active
+                {t("active")}
               </div>
             </div>
 
