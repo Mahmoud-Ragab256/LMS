@@ -9,15 +9,55 @@ import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
 import CourseContainer from "../components/containers/CourseContainer";
 import i18n from "../i18next";
+import { useState } from "react";
 
+
+interface IElementVal {
+  filter: boolean;
+  category: boolean;
+  level: boolean;
+  price: boolean;
+  categorySort: boolean;
+  teacher: boolean;
+  teacherSort: boolean;
+}
 
 function Explore() {
+
+  const initVal: IElementVal = {
+    filter: false,
+    category: false,
+    level: false,
+    price: false,
+    categorySort: false,
+    teacher: false,
+    teacherSort: false
+  }
+
+
+  let pr = 'all'
+  let pl = 'Physics'
+
+
 
   const { t } = useLanguage();
   const dir = i18n.dir();
 
-  let pr = 'all'
-  let pl = 'Physics'
+
+
+  const [isElementOpen, setIsElementOpen] = useState<IElementVal>(initVal)
+
+
+
+
+  const elementToggle = (element: string) => {
+    setIsElementOpen((prev) => ({ ...prev, [element]: !(prev as unknown as Record<string, boolean>)[element] }))
+  }
+
+
+  const arrowing = (truthy: boolean) => {
+    return truthy ? <MdKeyboardArrowDown /> : dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />
+  }
 
 
 
@@ -53,9 +93,11 @@ function Explore() {
           <label className="flex items-center justify-center p-1 cursor-pointer" htmlFor="explore-search"><IoIosSearch /></label>
           <input type="text" name="search" id="explore-search" placeholder={t('Search for a course, subject, or teacher.')} className="w-full h-full outline-0" />
         </span>
-        <div className="relative p-2 bg-primary rounded-xl flex items-center justify-center cursor-pointer">
-          <VscSettingsCompact className="text-white text-2xl" />
-          <div className="absolute -bottom-152 inset-e-0 w-60 h-150 rounded-xl shadow bg-indigo-100/95 dark:bg-indigo-950/90 text-sm font-medium p-5 cursor-auto overflow-y-scroll scrollbar-thumb-gray-100 dark:scrollbar-thumb-gray-700">
+        <div className="relative bg-primary rounded-xl flex items-center justify-center cursor-pointer" >
+          <div className="w-full h-full p-2" onClick={() => elementToggle("filter")}>
+            <VscSettingsCompact className="text-white text-2xl" />
+          </div>
+          <div className={`${isElementOpen.filter ? null : "hidden"} absolute -bottom-152 inset-e-0 w-60 h-150 rounded-xl shadow bg-indigo-100/95 dark:bg-indigo-950/90 text-sm font-medium p-5 cursor-auto overflow-y-scroll scrollbar-thumb-gray-100 dark:scrollbar-thumb-gray-700`}>
             <div className="space-y-5">
               <div className="space-y-2">
                 <span className="block">{t("Filter By")} :</span>
@@ -67,22 +109,22 @@ function Explore() {
               </div>
 
               <div className="space-y-2">
-                <span className="flex items-center cursor-pointer">{t("Category")} </span>
-                <div className="flex gap-1 flex-wrap space-y-0">
+                <span className="flex items-center cursor-pointer" onClick={() => elementToggle("category")}>{t("Category")} {arrowing(isElementOpen.category)}</span>
+                <div className={`${isElementOpen.category ? null : "hidden"} flex gap-1 flex-wrap space-y-0`}>
                   {renderCategories}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <span className="flex items-center cursor-pointer">{t("Level")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
-                <div className="flex gap-1 flex-wrap space-y-0">
+                <span className="flex items-center cursor-pointer" onClick={() => elementToggle("level")}>{t("Level")} {arrowing(isElementOpen.level)}</span>
+                <div className={`${isElementOpen.level ? null : "hidden"} flex gap-1 flex-wrap space-y-0`}>
                   {renderLevels}
                 </div>
               </div>
 
               <div className="flex flex-col">
-                <span className="flex items-center cursor-pointer mb-2">{t("Price")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
-                <div className="flex items-center flex-wrap gap-2">
+                <span className="flex items-center cursor-pointer mb-2" onClick={() => elementToggle("price")}>{t("Price")} {arrowing(isElementOpen.price)}</span>
+                <div className={`${isElementOpen.price ? null : "hidden"} flex items-center flex-wrap gap-2`}>
                   <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
                     <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">100 {t("EGP")} - 800 {t("EGP")}</span>
                   </div>
@@ -94,14 +136,14 @@ function Explore() {
                     <div className="absolute left-[30%] w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow cursor-pointer"></div>
                   </div>
                 </div>
-                <div className="flex justify-between text-sm">
+                <div className={`${isElementOpen.price ? null : "hidden"} flex justify-between text-sm`}>
                   <span>{t("Min")}</span>
                   <span>{t("Max")}</span>
                 </div>
               </div>
 
               <div className="flex flex-col text-right w-full">
-                <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5">
+                <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5" onClick={() => elementToggle("categorySort")}>
 
                   <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
                     <span className="flex items-center gap-1">
@@ -113,7 +155,7 @@ function Explore() {
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out">
+                  <div className={`${isElementOpen.categorySort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
                     <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
                       {t("Newest")}
                     </div>
@@ -134,35 +176,37 @@ function Explore() {
 
 
               <div className="space-y-3">
-                <span className="flex items-center cursor-pointer">{t("Teacher")} {dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />}</span>
-                <div className="flex flex-col gap-1">
-                  <div className="space-x-1">
-                    <input type="checkbox" id="active" name="activation" />
-                    <label htmlFor="active">active</label>
-                  </div>
-                  <div className="space-x-1">
-                    <input type="checkbox" id="inactive" name="activation" />
-                    <label htmlFor="inactive">inactive</label>
-                  </div>
-                </div>
-                <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5">
-
-                  <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
-                    <span className="flex items-center gap-1">
-                      {t("Sort By")} :
-                      <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <MdKeyboardArrowDown className="text-2xl" />
+                <span className="flex items-center cursor-pointer" onClick={() => elementToggle("teacher")}>{t("Teacher")} {arrowing(isElementOpen.teacher)}</span>
+                <div className={`${isElementOpen.teacher ? null : "hidden"} space-y-3`}>
+                  <div className="flex flex-col gap-1">
+                    <div className="space-x-1">
+                      <input type="checkbox" id="active" name="activation" />
+                      <label htmlFor="active">active</label>
+                    </div>
+                    <div className="space-x-1">
+                      <input type="checkbox" id="inactive" name="activation" />
+                      <label htmlFor="inactive">inactive</label>
                     </div>
                   </div>
+                  <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5">
 
-                  <div className="border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
-                      {t("Newest")}
+                    <div className="flex items-center justify-between p-3.5 cursor-pointer select-none" onClick={() => elementToggle("teacherSort")}>
+                      <span className="flex items-center gap-1">
+                        {t("Sort By")} :
+                        <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <MdKeyboardArrowDown className="text-2xl" />
+                      </div>
                     </div>
-                    <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
-                      {t("Oldest")}
+
+                    <div className={`${isElementOpen.teacherSort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
+                      <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
+                        {t("Newest")}
+                      </div>
+                      <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                        {t("Oldest")}
+                      </div>
                     </div>
                   </div>
 
