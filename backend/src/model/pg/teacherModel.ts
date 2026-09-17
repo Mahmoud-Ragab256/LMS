@@ -1,5 +1,5 @@
 import Query from './connection.js'
-import type { ITeacher, ICreateTeacher, IUpdateTeacher } from '../../interfaces/index.js'
+import type { ITeacher, ICreateTeacher, IUpdateTeacher, ITeacherRes } from '../../interfaces/index.js'
 import AppError from '../../utils/appError.js';
 
 
@@ -25,11 +25,13 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
   }
 }
 
-export const getAllTeachers = async (): Promise<ITeacher[] | undefined> => {
+export const getAllTeachers = async (): Promise<ITeacherRes[] | undefined> => {
   try {
-    const query = `SELECT * FROM teachers ORDER BY id DESC;`;
-    const result = await Query<ITeacher>(query);
-    delete (result as any).password
+    const query = `SELECT teachers.id, teachers.username, teachers.img_url, COUNT(courses.id) AS courses_count
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
+    ORDER BY teachers.id DESC;`;
+    const result = await Query<ITeacherRes>(query);
+    delete (result as any).password;
     return result;
   } catch (error) {
     if (error instanceof Error) {

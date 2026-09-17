@@ -1,13 +1,13 @@
 import type { Request, Response } from "express"
 import type { ApiResponse } from "../../types/index.js"
-import type { ICourse, ICourseFilter } from "../../interfaces/index.js"
+import type { ICourse, ICourseFilter, ICourseRes } from "../../interfaces/index.js"
 import { getAllCourses } from "../../model/pg/courseModel.js"
 import AppError from "../../utils/appError.js"
 
 export const getCourses = async (
-  req: Request<{}, ApiResponse<ICourse[]>, {}, ICourseFilter>,
-  res: Response<ApiResponse<ICourse[]>>
-): Promise<Response<ApiResponse<ICourse[]>>> => {
+  req: Request<{}, ApiResponse<ICourseRes[]>, {}, ICourseFilter>,
+  res: Response<ApiResponse<ICourseRes[]>>
+): Promise<Response<ApiResponse<ICourseRes[]>>> => {
   try {
     const courses = await getAllCourses(req.query as ICourseFilter);
 

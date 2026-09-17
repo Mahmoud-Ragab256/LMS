@@ -12,6 +12,19 @@ export interface ITeacher {
   createdAt: Date | string;
 }
 
+export interface ITeacherRes {
+  id: number;
+  username: string;
+  email: string;
+  password?: string;
+  phone: string;
+  imgUrl: string;
+  active: boolean;
+  coursesCount?: number;
+  updatedAt: Date | string;
+  createdAt: Date | string;
+}
+
 export interface ICreateTeacher {
   username: string;
   email: string;
@@ -70,6 +83,21 @@ export interface ICourse {
   imgUrl: string;
   category: CourseCategoryType;
   level: CourseLevelType;
+  updatedAt: Date | string;
+  createdAt: Date | string;
+}
+
+export interface ICourseRes {
+  id: number;
+  teacher_id: number;
+  title: string;
+  price: number;
+  description: string;
+  imgUrl: string;
+  category: CourseCategoryType;
+  level: CourseLevelType;
+  teacherName: string;
+  teacherImg: string;
   updatedAt: Date | string;
   createdAt: Date | string;
 }

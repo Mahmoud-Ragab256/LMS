@@ -1,5 +1,5 @@
 import Query from "./connection.js";
-import type { ICourse, ICourseFilter, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
+import type { ICourse, ICourseFilter, ICourseRes, ICreateCourse, IUpdateCourse } from '../../interfaces/index.js'
 import AppError from "../../utils/appError.js";
 
 export const createCourse = async (teacherId: number, data: ICreateCourse): Promise<ICourse | undefined> => {
@@ -11,7 +11,7 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
     RETURNING *;
     `;
     const values = [price, title, description, imgUrl, teacherId];
-    const result = await Query<ICourse>(query, values);
+    const result = await Query<ICourseRes>(query, values);
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
@@ -20,10 +20,11 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
   }
 }
 
-export const getAllCourses = async (data: ICourseFilter): Promise<ICourse[] | undefined> => {
+export const getAllCourses = async (data: ICourseFilter): Promise<ICourseRes[] | undefined> => {
   try {
     const { category, level, search, min_price, max_price, sort_by, order, page = 1, limit = 100 } = data;
-    let query = `SELECT * FROM courses WHERE 1 = 1`;
+    let query = `SELECT courses.*, teachers.username as teacher_name, teachers.img_url as teacher_img
+    FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE 1 = 1`;
     const values = [];
 
     if (category) {
@@ -51,7 +52,7 @@ export const getAllCourses = async (data: ICourseFilter): Promise<ICourse[] | un
       query += ` AND price <= $${values.length}`;
     }
 
-    const validSortFields = ['price', 'created_at', 'rating'];
+    const validSortFields = ['price', 'created_at',];
     const sortField = validSortFields.includes(sort_by) ? sort_by : 'created_at';
     const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
     query += ` ORDER BY ${sortField} ${sortOrder}`;
@@ -60,7 +61,8 @@ export const getAllCourses = async (data: ICourseFilter): Promise<ICourse[] | un
     values.push(limit, offset);
     query += ` LIMIT $${values.length - 1} OFFSET $${values.length}`;
 
-    const result = await Query<ICourse>(query, values);
+    const result = await Query<ICourseRes>(query, values);
+    console.log(result)
     return result;
   } catch (error) {
     if (error instanceof Error) {
