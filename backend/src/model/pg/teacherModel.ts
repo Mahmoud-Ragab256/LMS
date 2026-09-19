@@ -27,7 +27,7 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
 
 export const getAllTeachers = async (): Promise<ITeacherRes[] | undefined> => {
   try {
-    const query = `SELECT teachers.id, teachers.username, teachers.img_url, COUNT(courses.id) AS courses_count
+    const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
     FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
     ORDER BY teachers.id DESC;`;
     const result = await Query<ITeacherRes>(query);

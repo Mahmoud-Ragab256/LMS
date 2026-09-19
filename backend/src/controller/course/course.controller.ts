@@ -1,6 +1,6 @@
 import type { Request, Response } from "express"
 import type { ApiResponse } from "../../types/index.js"
-import type { ICourse, ICourseFilter, ICourseRes } from "../../interfaces/index.js"
+import type { ICourseFilter, ICourseRes } from "../../interfaces/index.js"
 import { getAllCourses } from "../../model/pg/courseModel.js"
 import AppError from "../../utils/appError.js"
 

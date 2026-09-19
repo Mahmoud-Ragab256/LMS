@@ -62,7 +62,6 @@ export const getAllCourses = async (data: ICourseFilter): Promise<ICourseRes[] |
     query += ` LIMIT $${values.length - 1} OFFSET $${values.length}`;
 
     const result = await Query<ICourseRes>(query, values);
-    console.log(result)
     return result;
   } catch (error) {
     if (error instanceof Error) {

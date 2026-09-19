@@ -15,9 +15,9 @@ export interface ITeacher {
 export interface ITeacherRes {
   id: number;
   username: string;
-  email: string;
+  email?: string;
   password?: string;
-  phone: string;
+  phone?: string;
   imgUrl: string;
   active: boolean;
   coursesCount?: number;
@@ -103,7 +103,6 @@ export interface ICourseRes {
 }
 
 export interface ICreateCourse {
-  teacherId: number;
   title: string;
   price: number;
   description: string;
@@ -112,7 +111,7 @@ export interface ICreateCourse {
 
 export interface IUpdateCourse {
   price?: number;
-  title: string;
+  title?: string;
   description?: string;
   imgUrl?: string;
 }
@@ -317,4 +316,10 @@ export interface ApiErrorResponse {
 export interface LoginReqBody {
   email: string;
   password: string;
+}
+
+export interface JwtPayload {
+  id: number;
+  active: boolean;
+  role: string;
 }

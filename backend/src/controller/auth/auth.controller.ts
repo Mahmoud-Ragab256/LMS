@@ -33,7 +33,7 @@ export const registerTeacher = async (
     }
     const { id, active } = teacher;
 
-    const token = jwt.sign({ id, active }, process.env.SECRET as string, {
+    const token = jwt.sign({ id, active, role: "teacher" }, process.env.SECRET as string, {
       expiresIn: "30d"
     });
 
@@ -73,7 +73,7 @@ export const registerStudent = async (
     }
     const { id, active } = student;
 
-    const token = jwt.sign({ id, active }, process.env.SECRET as string, {
+    const token = jwt.sign({ id, active, role: "student" }, process.env.SECRET as string, {
       expiresIn: "30d"
     });
 
@@ -119,7 +119,7 @@ export const loginTeacher = async (
     }
 
     const { id, active } = teacher;
-    const token = jwt.sign({ id, active }, process.env.SECRET as string, {
+    const token = jwt.sign({ id, active, role: "teacher" }, process.env.SECRET as string, {
       expiresIn: '30d'
     })
 
@@ -170,7 +170,7 @@ export const loginStudent = async (
 
     const { id, active } = student;
 
-    const token = jwt.sign({ id, active }, process.env.SECRET as string, {
+    const token = jwt.sign({ id, active, roles: "student" }, process.env.SECRET as string, {
       expiresIn: '30d'
     });
 
