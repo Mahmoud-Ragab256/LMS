@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
 import type { ApiResponse } from "../../types/index.js"
-import type { ICourse, ICourseFilter, ICourseRes, ICreateCourse } from "../../interfaces/index.js"
-import { createCourse, getAllCourses, getCourseById, getTeacherCourses } from "../../model/pg/courseModel.js"
+import type { ICourse, ICourseFilter, ICourseRes, ICreateCourse, IUpdateCourse } from "../../interfaces/index.js"
+import { createCourse, deleteCourse, getAllCourses, getCourseById, getTeacherCourses, updateCourse } from "../../model/pg/courseModel.js"
 import AppError from "../../utils/appError.js"
 
 export const getCourses = async (
@@ -116,6 +116,72 @@ export const getCourse = async (
     return res.json({
       status: 'success',
       data: course
+    })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    throw new AppError(statusCode, message);
+  }
+}
+
+export const updateCourseData = async (
+  req: Request<{ id: number }, ApiResponse<ICourse>, IUpdateCourse>,
+  res: Response<ApiResponse<ICourse>>
+): Promise<Response<ApiResponse<ICourse>>> => {
+
+  try {
+
+    const { id } = req.params;
+    const { price, title, description, imgUrl } = req.body;
+
+    if (!title || !price || !description || !imgUrl) {
+      return res.status(500).json({
+        status: 'fail',
+        message: 'Bad Request'
+      });
+    }
+
+    const updatedCourse = await updateCourse(id, res.locals.user.id, { title, price, description, imgUrl });
+
+    if (!updatedCourse) {
+      return res.status(500).json({
+        status: 'fail',
+        message: 'Bad Request'
+      });
+    }
+
+    return res.json({
+      status: 'success',
+      data: updatedCourse
+    })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    throw new AppError(statusCode, message);
+  }
+}
+
+
+export const deleteACourse = async (
+  req: Request<{ id: number }, ApiResponse<ICourse>, {}>,
+  res: Response<ApiResponse<ICourse>>
+): Promise<Response<ApiResponse<ICourse>>> => {
+  try {
+
+    const { id } = req.params;
+
+    const deletedCourse = await deleteCourse(id, res.locals.user.id);
+
+    if (!deletedCourse) {
+      return res.status(500).json({
+        status: 'fail',
+        message: 'Bad Request'
+      });
+    }
+
+    return res.json({
+      status: 'success',
+      data: deletedCourse
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Internal Server Error';

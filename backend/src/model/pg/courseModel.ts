@@ -117,10 +117,10 @@ export const updateCourse = async (id: number, teacherId: number, data: IUpdateC
   }
 }
 
-export const deleteCourse = async (id: number): Promise<ICourse | undefined> => {
+export const deleteCourse = async (id: number, teacher_id: number): Promise<ICourse | undefined> => {
   try {
-    const query = `DELETE * FROM courses WHERE id = $1 RETURNING *;`;
-    const result = await Query<ICourse>(query, [id]);
+    const query = `DELETE * FROM courses WHERE id = $1 AND teacher_id = $2 RETURNING *;`;
+    const result = await Query<ICourse>(query, [id, teacher_id]);
     return result[0];
   } catch (error) {
     if (error instanceof Error) {
