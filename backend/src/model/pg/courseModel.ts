@@ -73,7 +73,8 @@ export const getAllCourses = async (data: ICourseFilter): Promise<ICourseRes[] |
 
 export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | undefined> => {
   try {
-    const query = `SELECT * FROM courses WHERE teacher_id = $1 ORDER BY id DESC;`;
+    const query = `SELECT courses.*, teachers.username as teacher_name, teachers.img_url as teacher_img
+    FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE teacher_id = $1 ORDER BY id DESC;`;
     const result = await Query<ICourse>(query, [teacherId]);
     return result;
   } catch (error) {
@@ -85,7 +86,8 @@ export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | 
 
 export const getCourseById = async (id: number): Promise<ICourse | undefined> => {
   try {
-    const query = `SELECT * FROM courses WHERE id = $1;`;
+    const query = `SELECT courses.*, teachers.username as teacher_name, teachers.img_url as teacher_img
+    FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE id = $1;`;
     const result = await Query<ICourse>(query, [id]);
     return result[0];
   } catch (error) {

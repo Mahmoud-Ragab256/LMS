@@ -28,8 +28,7 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
 export const getAllTeachers = async (): Promise<ITeacherRes[] | undefined> => {
   try {
     const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
-    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
-    ORDER BY teachers.id DESC;`;
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id;`;
     const result = await Query<ITeacherRes>(query);
     delete (result as any).password;
     return result;
@@ -41,7 +40,9 @@ export const getAllTeachers = async (): Promise<ITeacherRes[] | undefined> => {
 }
 export const getTeacherById = async (id: number): Promise<ITeacher | undefined> => {
   try {
-    const query = `SELECT * FROM teachers WHERE id = $1;`;
+    const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
+    WHERE id = $1;`;
     const result = await Query<ITeacher>(query, [id]);
     delete (result[0] as any).password
     return result[0];
@@ -53,7 +54,9 @@ export const getTeacherById = async (id: number): Promise<ITeacher | undefined> 
 }
 export const getTeacherByEmail = async (email: string): Promise<ITeacher | undefined> => {
   try {
-    const query = `SELECT * FROM teachers WHERE email = $1;`;
+    const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
+    WHERE email = $1;`;
     const result = await Query<ITeacher>(query, [email]);
     return result[0];
   } catch (error) {
