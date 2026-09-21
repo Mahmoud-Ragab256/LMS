@@ -3,6 +3,7 @@ import type { ApiResponse } from "../../types/index.js"
 import type { ICourse, ICourseFilter, ICourseRes, ICreateCourse, IUpdateCourse } from "../../interfaces/index.js"
 import { createCourse, deleteCourse, getAllCourses, getCourseById, getTeacherCourses, updateCourse } from "../../model/pg/courseModel.js"
 import AppError from "../../utils/appError.js"
+import { createCourseSchema, updateCourseSchema } from "../../validation/courseValidationSchema.js"
 
 export const getCourses = async (
   req: Request<{}, ApiResponse<ICourseRes[]>, {}, ICourseFilter>,
@@ -37,12 +38,7 @@ export const addCourse = async (
 
     const { title, price, description, imgUrl } = req.body;
 
-    if (!title || !price || !description || !imgUrl) {
-      return res.status(500).json({
-        status: 'fail',
-        message: 'Bad Request'
-      });
-    }
+    createCourseSchema.parse({ title, price, description, imgUrl })
 
     const course = await createCourse(res.locals.user.id, { title, price, description, imgUrl });
 
@@ -74,6 +70,13 @@ export const getAllTeacherCourses = async (
 
     const { teacher_id } = req.params;
 
+    if (!teacher_id || isNaN(+teacher_id)) {
+      return res.status(500).json({
+        status: "error",
+        message: 'Invalid URL Teacher_id'
+      })
+    }
+
     const courses = await getTeacherCourses(teacher_id);
 
     if (!courses || courses.length === 0) {
@@ -104,6 +107,13 @@ export const getCourse = async (
 
     const { id } = req.params;
 
+    if (!id || isNaN(+id)) {
+      return res.status(500).json({
+        status: "error",
+        message: 'Invalid URL id'
+      })
+    }
+
     const course = await getCourseById(id);
 
     if (!course) {
@@ -132,14 +142,17 @@ export const updateCourseData = async (
   try {
 
     const { id } = req.params;
+
+    if (!id || isNaN(+id)) {
+      return res.status(500).json({
+        status: "error",
+        message: 'Invalid URL id'
+      })
+    }
+
     const { price, title, description, imgUrl } = req.body;
 
-    if (!title || !price || !description || !imgUrl) {
-      return res.status(500).json({
-        status: 'fail',
-        message: 'Bad Request'
-      });
-    }
+    updateCourseSchema.parse({ price, title, description, imgUrl });
 
     const updatedCourse = await updateCourse(id, res.locals.user.id, { title, price, description, imgUrl });
 
@@ -169,6 +182,13 @@ export const deleteACourse = async (
   try {
 
     const { id } = req.params;
+
+    if (!id || isNaN(+id)) {
+      return res.status(500).json({
+        status: "error",
+        message: 'Invalid URL id'
+      })
+    }
 
     const deletedCourse = await deleteCourse(id, res.locals.user.id);
 

@@ -110,10 +110,10 @@ export interface ICreateCourse {
 }
 
 export interface IUpdateCourse {
-  price?: number;
-  title?: string;
-  description?: string;
-  imgUrl?: string;
+  price?: number | undefined;
+  title?: string | undefined;
+  description?: string | undefined;
+  imgUrl?: string | undefined;
 }
 
 export interface ICourseFilter {
