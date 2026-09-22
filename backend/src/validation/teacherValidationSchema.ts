@@ -38,3 +38,23 @@ export const loginTeacherSchema = z.object({
     error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
   }).trim()
 })
+
+
+export const updateTeacherSchema = z.object({
+  username: z.string().min(5, "username must be at least 5 characters")
+    .max(20, "username must be not more than 20 characters")
+    .trim().optional(),
+
+  phone: z.string().regex(phoneRegex, "Phone number must be starting with 'country code' like '+201012345678'")
+    .trim().optional(),
+
+})
+
+// password: z.string({
+//   error: (issue) => issue.input === undefined ? "password is required" : "not a valid phone number"
+// }).regex(/[A-Z]/, "password must contain at least one uppercase letter")
+//   .regex(/[a-z]/, "password must contain at least one lowercase letter")
+//   .regex(/[0-9]/, "password must contain at least one number")
+//   .regex(/[^a-zA-Z0-9]/, "password must contain at least one special character")
+//   .min(8, "password must be at least 8 characters")
+//   .trim()

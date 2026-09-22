@@ -33,11 +33,10 @@ export interface ICreateTeacher {
 }
 
 export interface IUpdateTeacher {
-  username?: string;
-  email?: string;
-  phone?: string;
-  imgUrl?: string;
-  active?: boolean;
+  username?: string | undefined;
+  phone?: string | undefined;
+  imgUrl?: string | undefined;
+  active?: boolean | undefined;
 }
 
 // ---------------- Student ---------------

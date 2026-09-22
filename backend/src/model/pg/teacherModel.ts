@@ -103,3 +103,28 @@ export const deleteTeacher = async (id: number): Promise<ITeacher | undefined> =
     }
   }
 }
+
+export const getTeacherPassword = async (id: number) => {
+  try {
+    const query = `SELECT password FROM teachers WHERE id = $1;`;
+    const result = await Query(query, [id]);
+    return result[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(500, error.message);
+    }
+  }
+}
+
+
+export const updateTeacherPassword = async (id: number, newHashedPassword: string) => {
+  try {
+    const query = `UPDATE teachers SET password = $1 WHERE id = $2;`;
+    const result = await Query(query, [newHashedPassword, id]);
+    return result[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new AppError(500, error.message);
+    }
+  }
+}
