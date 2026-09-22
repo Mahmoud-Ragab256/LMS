@@ -66,7 +66,7 @@ export const getTeacherByEmail = async (email: string): Promise<ITeacher | undef
   }
 }
 
-export const updatedTeacher = async (id: number, data: IUpdateTeacher): Promise<ITeacher | undefined> => {
+export const updateTeacher = async (id: number, data: IUpdateTeacher): Promise<ITeacher | undefined> => {
   try {
     const keys = Object.keys(data) as (keyof IUpdateTeacher)[]
     if (!keys.length) return undefined;

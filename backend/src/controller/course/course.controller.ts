@@ -38,12 +38,12 @@ export const addCourse = async (
 
     const { title, price, description, imgUrl } = req.body;
 
-    createCourseSchema.parse({ title, price, description, imgUrl })
+    createCourseSchema.safeParse({ title, price, description, imgUrl })
 
     const course = await createCourse(res.locals.user.id, { title, price, description, imgUrl });
 
     if (!course) {
-      return res.status(500).json({
+      return res.status(400).json({
         status: 'fail',
         message: 'Bad Request'
       });
@@ -71,8 +71,8 @@ export const getAllTeacherCourses = async (
     const { teacher_id } = req.params;
 
     if (!teacher_id || isNaN(+teacher_id)) {
-      return res.status(500).json({
-        status: "error",
+      return res.status(400).json({
+        status: 'fail',
         message: 'Invalid URL Teacher_id'
       })
     }
@@ -108,8 +108,8 @@ export const getCourse = async (
     const { id } = req.params;
 
     if (!id || isNaN(+id)) {
-      return res.status(500).json({
-        status: "error",
+      return res.status(400).json({
+        status: 'fail',
         message: 'Invalid URL id'
       })
     }
@@ -144,22 +144,22 @@ export const updateCourseData = async (
     const { id } = req.params;
 
     if (!id || isNaN(+id)) {
-      return res.status(500).json({
-        status: "error",
+      return res.status(400).json({
+        status: 'fail',
         message: 'Invalid URL id'
       })
     }
 
     const { price, title, description, imgUrl } = req.body;
 
-    updateCourseSchema.parse({ price, title, description, imgUrl });
+    updateCourseSchema.safeParse({ price, title, description, imgUrl });
 
     const updatedCourse = await updateCourse(id, res.locals.user.id, { title, price, description, imgUrl });
 
     if (!updatedCourse) {
       return res.status(500).json({
-        status: 'fail',
-        message: 'Bad Request'
+        status: 'error',
+        message: 'Internal Server Error'
       });
     }
 
@@ -184,8 +184,8 @@ export const deleteACourse = async (
     const { id } = req.params;
 
     if (!id || isNaN(+id)) {
-      return res.status(500).json({
-        status: "error",
+      return res.status(400).json({
+        status: 'fail',
         message: 'Invalid URL id'
       })
     }
@@ -194,8 +194,8 @@ export const deleteACourse = async (
 
     if (!deletedCourse) {
       return res.status(500).json({
-        status: 'fail',
-        message: 'Bad Request'
+        status: 'error',
+        message: 'Internal Server Error'
       });
     }
 
