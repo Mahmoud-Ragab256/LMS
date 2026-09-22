@@ -51,3 +51,16 @@ export interface ICourseRes {
   updatedAt: Date | string;
   createdAt: Date | string;
 }
+
+export interface ITeacherRes {
+  id: number;
+  username: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  imgUrl: string;
+  active: boolean;
+  coursesCount?: number;
+  updatedAt: Date | string;
+  createdAt: Date | string;
+}

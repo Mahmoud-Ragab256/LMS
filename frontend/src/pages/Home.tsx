@@ -12,7 +12,7 @@ import { useLanguage } from "../context/useLanguage";
 import i18n from "../i18next";
 import CourseContainer from "../components/containers/CourseContainer";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../config/axiosConfig";
 
 
 
@@ -24,12 +24,11 @@ function Home() {
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const response = await axios.get('http://localhost:3000/api/v1/courses');
-      // console.log(response.data.data)
+      const response = await API.get("/courses");
       setCourses(response.data.data);
     }
 
-    fetchCourses()
+    fetchCourses();
   }, [])
 
 

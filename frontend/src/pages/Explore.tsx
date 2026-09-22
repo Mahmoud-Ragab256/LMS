@@ -9,7 +9,9 @@ import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
 import CourseContainer from "../components/containers/CourseContainer";
 import i18n from "../i18next";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import API from "../config/axiosConfig";
 
 
 interface IElementVal {
@@ -46,6 +48,8 @@ function Explore() {
 
   const [isElementOpen, setIsElementOpen] = useState<IElementVal>(initVal);
   const [show, setShow] = useState<"all" | "courses" | "teachers">("all");
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+  const [selectedLevel, setSelectedLevel] = useState<string[]>([]);
 
 
 
@@ -61,6 +65,37 @@ function Explore() {
     return truthy ? <MdKeyboardArrowDown /> : dir === "ltr" ? <MdKeyboardArrowRight /> : <MdKeyboardArrowLeft />
   }
 
+  const categoryToggle = (category: string) => {
+    if (selectedCategory.includes(category)) {
+      return setSelectedCategory(selectedCategory.filter(c => c !== category));
+    }
+    return setSelectedCategory(prev => [...prev, category]);
+  }
+
+  const levelToggle = (level: string) => {
+    if (selectedLevel.includes(level)) {
+      return setSelectedLevel(selectedLevel.filter(l => l !== level));
+    }
+    return setSelectedLevel(prev => [...prev, level]);
+  }
+
+
+  const { isPending, data, error } = useQuery({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const response = await API.get("/courses");
+      return response.data.data;
+
+    }
+  })
+  const { isPending: teachersPending, data: teachersData, error: teachersError } = useQuery({
+    queryKey: ['teachers'],
+    queryFn: async () => {
+      const response = await API.get("/teachers");
+      return response.data.data;
+
+    }
+  })
 
 
 
@@ -68,21 +103,21 @@ function Explore() {
 
   const renderCategories = categories.map((category, index) => {
     return (
-      <>
-        {pl === category ? <span key={index} className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer">{t(category)} <IoMdCheckmark /></span>
-          : <span key={index} className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer">{t(category)}</span>
+      <Fragment key={index}>
+        {selectedCategory.includes(category) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => categoryToggle(category)}>{t(category)}</span>
+          : <span className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer" onClick={() => categoryToggle(category)}>{t(category)}</span>
         }
-      </>
+      </Fragment>
     )
   })
 
   const renderLevels = levels.map((level, index) => {
     return (
-      <>
-        {pl === level ? <span key={index} className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer">{t(level)} <IoMdCheckmark /></span>
-          : <span key={index} className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer">{t(level)}</span>
+      <Fragment key={index}>
+        {selectedLevel.includes(level) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => levelToggle(level)}>{t(level)}</span>
+          : <span className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer" onClick={() => levelToggle(level)}>{t(level)}</span>
         }
-      </>
+      </Fragment>
     )
   })
 
@@ -287,7 +322,8 @@ function Explore() {
           <Button className="btn-sm">{t("View All")}</Button>
         </div>
 
-        <TeacherContainer />
+        {teachersPending ? null : teachersError ? "Something Went Wrong" : <TeacherContainer teachers={teachersData} />}
+
       </div>
 
       <div className="py-5 space-y-10">
@@ -298,12 +334,9 @@ function Explore() {
           </div>
           <Button className="btn-sm btn-secondary">{t("View All")}</Button>
         </div>
+        {isPending ? null : error ? "Something Went Wrong" : <CourseContainer courses={data.slice(0, 8)} />}
 
-        <CourseContainer courses={[]} />
       </div>
-      {/* <div className="flex items-center justify-center flex-wrap gap-3">
-        {renderLevels}
-      </div> */}
     </div>
   )
 }
