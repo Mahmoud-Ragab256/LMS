@@ -81,5 +81,7 @@
   "Newest": "الأحدث",
   "Oldest": "الأقدم",
   "active": "نشط",
-  "inactive": "غير نشط"
+  "inactive": "غير نشط",
+  "Max Price": "أعلي سعر",
+  "Min Price": "أقل سعر"
 }

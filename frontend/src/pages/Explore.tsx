@@ -8,7 +8,7 @@ import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
 import CourseContainer from "../components/containers/CourseContainer";
 import i18n from "../i18next";
-import { Fragment, useState } from "react";
+import { Fragment, useState, type ChangeEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import API from "../config/axiosConfig";
 
@@ -50,8 +50,9 @@ function Explore() {
   const [selectedLevel, setSelectedLevel] = useState<string[]>([]);
   const [minVal, setMinVal] = useState<number>(MIN_PRICE);
   const [maxVal, setMaxVal] = useState<number>(MAX_PRICE);
-
-
+  const [courseSort, setCourseSort] = useState("Newest");
+  const [activation, setActivation] = useState<string[]>([]);
+  const [teacherSort, setTeacherSort] = useState<string>("Newest");
 
 
 
@@ -77,6 +78,13 @@ function Explore() {
       return setSelectedLevel(selectedLevel.filter(l => l !== level));
     }
     return setSelectedLevel(prev => [...prev, level]);
+  }
+
+  const activationChangeHandler = (value: string, e: ChangeEvent<HTMLInputElement>) => {
+    setActivation(prev => (
+      e.target.checked ? [...prev, value] : activation.filter(a => a !== value)
+    )
+    )
   }
 
 
@@ -216,7 +224,7 @@ function Explore() {
                       <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
                         <span className="flex items-center gap-1">
                           {t("Sort By")} :
-                          <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
+                          <span className="px-3 font-semibold text-sm text-primary">{t(courseSort)}</span>
                         </span>
                         <div className="flex items-center gap-2">
                           <MdKeyboardArrowDown className="text-2xl" />
@@ -224,16 +232,16 @@ function Explore() {
                       </div>
 
                       <div className={`${isElementOpen.categorySort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
-                        <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Newest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Newest")}>
                           {t("Newest")}
                         </div>
-                        <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Oldest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Oldest")}>
                           {t("Oldest")}
                         </div>
-                        <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Max Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Max Price")}>
                           {t("Max")} {t("Price")}
                         </div>
-                        <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Min Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Min Price")}>
                           {t("Min")} {t("Price")}
                         </div>
                       </div>
@@ -251,12 +259,12 @@ function Explore() {
                     <div className={`${isElementOpen.teacher ? null : "hidden"} space-y-3 mt-2`}>
                       <div className="flex flex-col gap-1">
                         <div className="space-x-1">
-                          <input type="checkbox" id="active" name="activation" />
-                          <label htmlFor="active">active</label>
+                          <input type="checkbox" id="active" name="activation" checked={activation.includes("active")} onChange={(e) => activationChangeHandler("active", e)} />
+                          <label htmlFor="active">{t("active")}</label>
                         </div>
                         <div className="space-x-1">
-                          <input type="checkbox" id="inactive" name="activation" />
-                          <label htmlFor="inactive">inactive</label>
+                          <input type="checkbox" id="inactive" name="activation" checked={activation.includes("inactive")} onChange={(e) => activationChangeHandler("inactive", e)} />
+                          <label htmlFor="inactive">{t("inactive")}</label>
                         </div>
                       </div>
 
@@ -270,64 +278,23 @@ function Explore() {
                     <div className="flex items-center justify-between p-3.5 cursor-pointer select-none" onClick={() => elementToggle("teacherSort")}>
                       <span className="flex items-center gap-1">
                         {t("Sort By")} :
-                        <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
+                        <span className="px-3 font-semibold text-sm text-primary">{t(teacherSort)}</span>
                       </span>
                       <div className="flex items-center gap-2">
                         <MdKeyboardArrowDown className="text-2xl" />
                       </div>
                     </div>
 
-                    <div className={`${isElementOpen.teacherSort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
-                      <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
+                    <div className={`${isElementOpen.teacherSort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`} onClick={() => elementToggle("teacherSort")}>
+                      <div className={`w-full text-right px-4 py-2.5 text-sm ${teacherSort === "Newest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} font-semibold cursor-pointer`} onClick={() => setTeacherSort("Newest")}>
                         {t("Newest")}
                       </div>
-                      <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                      <div className={`w-full text-right px-4 py-2.5 text-sm ${teacherSort === "Oldest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} cursor-pointer`} onClick={() => setTeacherSort("Oldest")}>
                         {t("Oldest")}
                       </div>
                     </div>
                   </div>
                 </> : null}
-              {/* <div>
-                <span className="flex items-center cursor-pointer" onClick={() => elementToggle("teacher")}>{t("Teacher")} {arrowing(isElementOpen.teacher)}</span>
-                <div className={`${isElementOpen.teacher ? null : "hidden"} space-y-3 mt-2`}>
-                  <div className="flex flex-col gap-1">
-                    <div className="space-x-1">
-                      <input type="checkbox" id="active" name="activation" />
-                      <label htmlFor="active">active</label>
-                    </div>
-                    <div className="space-x-1">
-                      <input type="checkbox" id="inactive" name="activation" />
-                      <label htmlFor="inactive">inactive</label>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
-
-              <hr className="text-gray-300 dark:text-gray-700 my-1" />
-
-              <div className="flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow shadow-black/10 dark:shadow-white/5 my-5">
-
-                <div className="flex items-center justify-between p-3.5 cursor-pointer select-none" onClick={() => elementToggle("teacherSort")}>
-                  <span className="flex items-center gap-1">
-                    {t("Sort By")} :
-                    <span className="px-3 font-semibold text-sm text-primary">{t("Newest")}</span>
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <MdKeyboardArrowDown className="text-2xl" />
-                  </div>
-                </div>
-
-                <div className={`${isElementOpen.teacherSort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
-                  <div className="w-full text-right px-4 py-2.5 text-sm bg-gray-200 dark:bg-gray-900 font-semibold cursor-pointer">
-                    {t("Newest")}
-                  </div>
-                  <div className="w-full text-right px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
-                    {t("Oldest")}
-                  </div>
-                </div>
-              </div> */}
 
             </div>
           </div>
