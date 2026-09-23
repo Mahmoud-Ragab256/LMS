@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import API from "../config/axiosConfig";
 
 
-interface IElementVal {
+interface IElementOpen {
   filter: boolean;
   category: boolean;
   level: boolean;
@@ -23,9 +23,23 @@ interface IElementVal {
   teacherSort: boolean;
 }
 
+interface IFilter {
+  categories: string[];
+  levels: string[];
+  minVal: number;
+  maxVal: number;
+  courseSort: string;
+  activation: string[];
+  teacherSort: string;
+}
+
 function Explore() {
 
-  const initVal: IElementVal = {
+
+  const MIN_PRICE = 0;
+  const MAX_PRICE = 1000;
+
+  const initVal: IElementOpen = {
     filter: false,
     category: false,
     level: false,
@@ -35,8 +49,16 @@ function Explore() {
     teacherSort: false
   }
 
-  const MIN_PRICE = 0;
-  const MAX_PRICE = 1000;
+  const initFilter: IFilter = {
+    categories: [],
+    levels: [],
+    minVal: MIN_PRICE,
+    maxVal: MAX_PRICE,
+    courseSort: "Newest",
+    activation: [],
+    teacherSort: "Newest"
+  }
+
 
 
   const { t } = useLanguage();
@@ -44,15 +66,10 @@ function Explore() {
 
 
 
-  const [isElementOpen, setIsElementOpen] = useState<IElementVal>(initVal);
+  const [isElementOpen, setIsElementOpen] = useState<IElementOpen>(initVal);
   const [show, setShow] = useState<"all" | "courses" | "teachers">("all");
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedLevel, setSelectedLevel] = useState<string[]>([]);
-  const [minVal, setMinVal] = useState<number>(MIN_PRICE);
-  const [maxVal, setMaxVal] = useState<number>(MAX_PRICE);
-  const [courseSort, setCourseSort] = useState("Newest");
-  const [activation, setActivation] = useState<string[]>([]);
-  const [teacherSort, setTeacherSort] = useState<string>("Newest");
+  // const [activation, setActivation] = useState<string[]>([]);
+  const [filter, setFilter] = useState<IFilter>(initFilter)
 
 
 
@@ -67,22 +84,22 @@ function Explore() {
   }
 
   const categoryToggle = (category: string) => {
-    if (selectedCategory.includes(category)) {
-      return setSelectedCategory(selectedCategory.filter(c => c !== category));
+    if (filter.categories.includes(category)) {
+      return setFilter(prev => ({ ...prev, categories: filter.categories.filter(c => c !== category) }));
     }
-    return setSelectedCategory(prev => [...prev, category]);
+    return setFilter(prev => ({ ...prev, categories: [...filter.categories, category] }));
   }
 
   const levelToggle = (level: string) => {
-    if (selectedLevel.includes(level)) {
-      return setSelectedLevel(selectedLevel.filter(l => l !== level));
+    if (filter.levels.includes(level)) {
+      return setFilter(prev => ({ ...prev, level: filter.levels.filter(l => l !== level) }));
     }
-    return setSelectedLevel(prev => [...prev, level]);
+    return setFilter(prev => ({ ...prev, levels: [...filter.levels, level] }));
   }
 
   const activationChangeHandler = (value: string, e: ChangeEvent<HTMLInputElement>) => {
-    setActivation(prev => (
-      e.target.checked ? [...prev, value] : activation.filter(a => a !== value)
+    setFilter(prev => (
+      e.target.checked ? { ...prev, activation: [...filter.activation, value] } : { ...prev, activation: filter.activation.filter(a => a !== value) }
     )
     )
   }
@@ -112,7 +129,7 @@ function Explore() {
   const renderCategories = categories.map((category, index) => {
     return (
       <Fragment key={index}>
-        {selectedCategory.includes(category) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => categoryToggle(category)}>{t(category)}</span>
+        {filter.categories.includes(category) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => categoryToggle(category)}>{t(category)}</span>
           : <span className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer" onClick={() => categoryToggle(category)}>{t(category)}</span>
         }
       </Fragment>
@@ -122,7 +139,7 @@ function Explore() {
   const renderLevels = levels.map((level, index) => {
     return (
       <Fragment key={index}>
-        {selectedLevel.includes(level) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => levelToggle(level)}>{t(level)}</span>
+        {filter.levels.includes(level) ? <span className="p-0.5 px-2 w-fit bg-primary text-white text-sm font-light shadow shadow-black/5 rounded-full flex items-center gap-1 cursor-pointer" onClick={() => levelToggle(level)}>{t(level)}</span>
           : <span className="p-0.5 px-2 bg-gray-50 dark:bg-surface-dark dark:text-gray-300 text-sm font-light shadow shadow-black/5 rounded-full cursor-pointer" onClick={() => levelToggle(level)}>{t(level)}</span>
         }
       </Fragment>
@@ -169,7 +186,7 @@ function Explore() {
                     <span className="flex items-center cursor-pointer" onClick={() => elementToggle("price")}>{t("Price")} {arrowing(isElementOpen.price)}</span>
                     <div className={`${isElementOpen.price ? null : "hidden"} flex items-center flex-wrap gap-2 mt-2`}>
                       <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
-                        <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">{minVal} {t("EGP")} -{maxVal} {t("EGP")}</span>
+                        <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">{filter.minVal} {t("EGP")} -{filter.maxVal} {t("EGP")}</span>
                       </div>
 
                       <div className="relative w-full h-6 flex items-center">
@@ -179,8 +196,8 @@ function Explore() {
                         <div
                           className="absolute h-1.5 rounded-full bg-blue-500"
                           style={{
-                            left: `${((minVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
-                            right: `${100 - ((maxVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                            insetInlineStart: `${((filter.minVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                            insetInlineEnd: `${100 - ((filter.maxVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
                           }}
                         />
 
@@ -189,10 +206,10 @@ function Explore() {
                           min={MIN_PRICE}
                           max={MAX_PRICE}
                           step={10}
-                          value={minVal}
+                          value={filter.minVal}
                           onChange={(event) => {
-                            const value = Math.min(Number(event.target.value), maxVal - 10);
-                            setMinVal(value);
+                            const value = Math.min(Number(event.target.value), filter.maxVal - 10);
+                            setFilter(prev => ({ ...prev, minVal: value }));
                           }}
                           className="range-thumb absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none z-20"
                         />
@@ -201,10 +218,10 @@ function Explore() {
                           min={MIN_PRICE}
                           max={MAX_PRICE}
                           step={10}
-                          value={maxVal}
+                          value={filter.maxVal}
                           onChange={(event) => {
-                            const value = Math.max(Number(event.target.value), minVal + 10);
-                            setMaxVal(value);
+                            const value = Math.max(Number(event.target.value), filter.minVal + 10);
+                            setFilter(prev => ({ ...prev, maxVal: value }));
                           }}
                           className="range-thumb absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none z-30"
                         />
@@ -224,7 +241,7 @@ function Explore() {
                       <div className="flex items-center justify-between p-3.5 cursor-pointer select-none">
                         <span className="flex items-center gap-1">
                           {t("Sort By")} :
-                          <span className="px-3 font-semibold text-sm text-primary">{t(courseSort)}</span>
+                          <span className="px-3 font-semibold text-sm text-primary">{t(filter.courseSort)}</span>
                         </span>
                         <div className="flex items-center gap-2">
                           <MdKeyboardArrowDown className="text-2xl" />
@@ -232,16 +249,16 @@ function Explore() {
                       </div>
 
                       <div className={`${isElementOpen.categorySort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`}>
-                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Newest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Newest")}>
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.courseSort === "Newest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, courseSort: "Newest" }))}>
                           {t("Newest")}
                         </div>
-                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Oldest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Oldest")}>
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.courseSort === "Oldest" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, courseSort: "Oldest" }))}>
                           {t("Oldest")}
                         </div>
-                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Max Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Max Price")}>
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.courseSort === "Max Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, courseSort: "Max Price" }))}>
                           {t("Max")} {t("Price")}
                         </div>
-                        <div className={`w-full text-right px-4 py-2.5 text-sm ${courseSort === "Min Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setCourseSort("Min Price")}>
+                        <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.courseSort === "Min Price" ? "bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"}  font-semibold cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, courseSort: "Min Price" }))}>
                           {t("Min")} {t("Price")}
                         </div>
                       </div>
@@ -259,11 +276,11 @@ function Explore() {
                     <div className={`${isElementOpen.teacher ? null : "hidden"} space-y-3 mt-2`}>
                       <div className="flex flex-col gap-1">
                         <div className="space-x-1">
-                          <input type="checkbox" id="active" name="activation" checked={activation.includes("active")} onChange={(e) => activationChangeHandler("active", e)} />
+                          <input type="checkbox" id="active" name="activation" checked={filter.activation.includes("active")} onChange={(e) => activationChangeHandler("active", e)} />
                           <label htmlFor="active">{t("active")}</label>
                         </div>
                         <div className="space-x-1">
-                          <input type="checkbox" id="inactive" name="activation" checked={activation.includes("inactive")} onChange={(e) => activationChangeHandler("inactive", e)} />
+                          <input type="checkbox" id="inactive" name="activation" checked={filter.activation.includes("inactive")} onChange={(e) => activationChangeHandler("inactive", e)} />
                           <label htmlFor="inactive">{t("inactive")}</label>
                         </div>
                       </div>
@@ -278,7 +295,7 @@ function Explore() {
                     <div className="flex items-center justify-between p-3.5 cursor-pointer select-none" onClick={() => elementToggle("teacherSort")}>
                       <span className="flex items-center gap-1">
                         {t("Sort By")} :
-                        <span className="px-3 font-semibold text-sm text-primary">{t(teacherSort)}</span>
+                        <span className="px-3 font-semibold text-sm text-primary">{t(filter.teacherSort)}</span>
                       </span>
                       <div className="flex items-center gap-2">
                         <MdKeyboardArrowDown className="text-2xl" />
@@ -286,10 +303,10 @@ function Explore() {
                     </div>
 
                     <div className={`${isElementOpen.teacherSort ? null : "hidden"} border-t border-gray-100 dark:border-gray-700 py-2 overflow-hidden transition-all duration-300 ease-in-out`} onClick={() => elementToggle("teacherSort")}>
-                      <div className={`w-full text-right px-4 py-2.5 text-sm ${teacherSort === "Newest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} font-semibold cursor-pointer`} onClick={() => setTeacherSort("Newest")}>
+                      <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.teacherSort === "Newest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} font-semibold cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, teacherSort: "Newest" }))}>
                         {t("Newest")}
                       </div>
-                      <div className={`w-full text-right px-4 py-2.5 text-sm ${teacherSort === "Oldest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} cursor-pointer`} onClick={() => setTeacherSort("Oldest")}>
+                      <div className={`w-full text-right px-4 py-2.5 text-sm ${filter.teacherSort === "Oldest" ? " bg-gray-200 dark:bg-gray-900" : "hover:bg-gray-50 dark:hover:bg-gray-700"} cursor-pointer`} onClick={() => setFilter(prev => ({ ...prev, teacherSort: "Oldest" }))}>
                         {t("Oldest")}
                       </div>
                     </div>
