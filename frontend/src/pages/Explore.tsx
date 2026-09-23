@@ -4,7 +4,6 @@ import Button from "../components/ui/Button";
 import { useLanguage } from "../context/useLanguage";
 import { VscSettingsCompact } from "react-icons/vsc";
 import { categories, levels } from "../data/categories";
-import { IoMdCheckmark } from "react-icons/io";
 import { BiFilterAlt } from "react-icons/bi";
 import TeacherContainer from "../components/containers/TeacherContainer";
 import CourseContainer from "../components/containers/CourseContainer";
@@ -36,9 +35,8 @@ function Explore() {
     teacherSort: false
   }
 
-
-  let pl = 'Physics';
-
+  const MIN_PRICE = 0;
+  const MAX_PRICE = 1000;
 
 
   const { t } = useLanguage();
@@ -50,6 +48,8 @@ function Explore() {
   const [show, setShow] = useState<"all" | "courses" | "teachers">("all");
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedLevel, setSelectedLevel] = useState<string[]>([]);
+  const [minVal, setMinVal] = useState<number>(MIN_PRICE);
+  const [maxVal, setMaxVal] = useState<number>(MAX_PRICE);
 
 
 
@@ -161,14 +161,45 @@ function Explore() {
                     <span className="flex items-center cursor-pointer" onClick={() => elementToggle("price")}>{t("Price")} {arrowing(isElementOpen.price)}</span>
                     <div className={`${isElementOpen.price ? null : "hidden"} flex items-center flex-wrap gap-2 mt-2`}>
                       <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
-                        <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">100 {t("EGP")} - 800 {t("EGP")}</span>
+                        <span className="text-xs text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-medium">{minVal} {t("EGP")} -{maxVal} {t("EGP")}</span>
                       </div>
 
                       <div className="relative w-full h-6 flex items-center">
-                        <div className="absolute w-full h-1.5 bg-gray-100 rounded-full"></div>
-                        <div className="absolute right-[20%] left-[30%] h-1.5 bg-blue-600 rounded-full"></div>
-                        <div className="absolute right-[20%] w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow cursor-pointer"></div>
-                        <div className="absolute left-[30%] w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow cursor-pointer"></div>
+
+                        <div className="absolute w-full h-1.5 rounded-full bg-gray-200" />
+
+                        <div
+                          className="absolute h-1.5 rounded-full bg-blue-500"
+                          style={{
+                            left: `${((minVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                            right: `${100 - ((maxVal - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                          }}
+                        />
+
+                        <input
+                          type="range"
+                          min={MIN_PRICE}
+                          max={MAX_PRICE}
+                          step={10}
+                          value={minVal}
+                          onChange={(event) => {
+                            const value = Math.min(Number(event.target.value), maxVal - 10);
+                            setMinVal(value);
+                          }}
+                          className="range-thumb absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none z-20"
+                        />
+                        <input
+                          type="range"
+                          min={MIN_PRICE}
+                          max={MAX_PRICE}
+                          step={10}
+                          value={maxVal}
+                          onChange={(event) => {
+                            const value = Math.max(Number(event.target.value), minVal + 10);
+                            setMaxVal(value);
+                          }}
+                          className="range-thumb absolute w-full h-1.5 bg-transparent appearance-none pointer-events-none z-30"
+                        />
                       </div>
                     </div>
                     <div className={`${isElementOpen.price ? null : "hidden"} flex justify-between text-sm`}>
