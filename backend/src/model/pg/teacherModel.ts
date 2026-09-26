@@ -1,5 +1,5 @@
 import Query from './connection.js'
-import type { ITeacher, ICreateTeacher, IUpdateTeacher, ITeacherRes } from '../../interfaces/index.js'
+import type { ITeacher, ICreateTeacher, IUpdateTeacher, ITeacherRes, ITeacherFilter } from '../../interfaces/index.js'
 import AppError from '../../utils/appError.js';
 
 
@@ -25,11 +25,25 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
   }
 }
 
-export const getAllTeachers = async (): Promise<ITeacherRes[] | undefined> => {
+export const getAllTeachers = async (data: ITeacherFilter): Promise<ITeacherRes[] | undefined> => {
   try {
-    const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
-    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id;`;
-    const result = await Query<ITeacherRes>(query);
+
+    const { active, order } = data;
+    const values = [];
+
+    let query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id WHERE 1 = 1`;
+
+    if (active) {
+      values.push(active === "true")
+      query += ` AND active = $${values.length}`
+    }
+
+    const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
+
+
+    query += ` GROUP BY teachers.id ORDER BY teachers.created_at ${sortOrder}`;
+    const result = await Query<ITeacherRes>(query, values);
     delete (result as any).password;
     return result;
   } catch (error) {

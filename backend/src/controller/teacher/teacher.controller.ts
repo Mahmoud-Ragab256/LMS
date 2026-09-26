@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { ITeacher, ITeacherRes, IUpdateTeacher } from "../../interfaces/index.js";
+import type { ITeacher, ITeacherFilter, ITeacherRes, IUpdateTeacher } from "../../interfaces/index.js";
 import type { ApiResponse } from "../../types/index.js";
 import { deleteTeacher, getAllTeachers, getTeacherById, getTeacherPassword, updateTeacher, updateTeacherPassword } from "../../model/pg/teacherModel.js";
 import AppError from "../../utils/appError.js";
@@ -12,13 +12,15 @@ import { comparingPassword, hashingPassword } from "../../utils/passwordsBcrypt.
 
 
 export const getTeachers = async (
-  req: Request<{}, ApiResponse<ITeacherRes[]>, {}>,
+  req: Request<{}, ApiResponse<ITeacherRes[]>, {}, ITeacherFilter>,
   res: Response<ApiResponse<ITeacherRes[]>>,
 ): Promise<Response<ApiResponse<ITeacherRes[]>>> => {
 
   try {
 
-    const teachers = await getAllTeachers();
+    const { active, order } = req.query;
+
+    const teachers = await getAllTeachers({ active, order });
 
     if (!teachers || teachers.length === 0) {
       return res.json({

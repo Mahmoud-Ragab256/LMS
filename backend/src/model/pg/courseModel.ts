@@ -22,38 +22,40 @@ export const createCourse = async (teacherId: number, data: ICreateCourse): Prom
 
 export const getAllCourses = async (data: ICourseFilter): Promise<ICourseRes[] | undefined> => {
   try {
-    const { category, level, search, min_price, max_price, sort_by, order, page = 1, limit = 100 } = data;
+    const { category, level, search, minPrice, maxPrice, sortBy, order, page = 1, limit = 100 } = data;
     let query = `SELECT courses.*, teachers.username as teacher_name, teachers.img_url as teacher_img
     FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE 1 = 1`;
     const values = [];
 
     if (category) {
-      values.push(category);
-      query += `AND category = $${values.length}`;
+      const cat = category.split(",").map((c) => c.trim().toLowerCase());
+      values.push(cat);
+      query += ` AND category = ANY($${values.length})`;
     }
 
     if (level) {
-      values.push(level);
-      query += `AND level = $${values.length}`;
+      const lev = level.split(",").map((l) => l.trim().toLowerCase());
+      values.push(lev);
+      query += ` AND level = ANY($${values.length})`;
     }
 
     if (search) {
       values.push(search);
-      query += `AND title ILIKE $${values.length}`;
+      query += ` AND title ILIKE $${values.length}`;
     }
 
-    if (min_price) {
-      values.push(min_price);
+    if (minPrice) {
+      values.push(minPrice);
       query += ` AND price >= $${values.length}`;
     }
 
-    if (max_price) {
-      values.push(max_price);
+    if (maxPrice) {
+      values.push(maxPrice);
       query += ` AND price <= $${values.length}`;
     }
 
     const validSortFields = ['price', 'created_at',];
-    const sortField = validSortFields.includes(sort_by) ? sort_by : 'created_at';
+    const sortField = validSortFields.includes(sortBy) ? sortBy : 'created_at';
     const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
     query += ` ORDER BY ${sortField} ${sortOrder}`;
 

@@ -39,6 +39,11 @@ export interface IUpdateTeacher {
   active?: boolean | undefined;
 }
 
+export interface ITeacherFilter {
+  active: string;
+  order: string;
+}
+
 // ---------------- Student ---------------
 
 export interface IStudent {
@@ -119,9 +124,9 @@ export interface ICourseFilter {
   category: string;
   level: string;
   search: string;
-  min_price: string;
-  max_price: string;
-  sort_by: string;
+  minPrice: string;
+  maxPrice: string;
+  sortBy: string;
   order: CourseFilterOrderType;
   page: number;
   limit: number

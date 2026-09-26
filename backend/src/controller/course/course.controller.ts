@@ -10,7 +10,11 @@ export const getCourses = async (
   res: Response<ApiResponse<ICourseRes[]>>
 ): Promise<Response<ApiResponse<ICourseRes[]>>> => {
   try {
-    const courses = await getAllCourses(req.query as ICourseFilter);
+
+    const { category, level, search, minPrice, maxPrice, sortBy, order, page, limit } = req.query;
+
+
+    const courses = await getAllCourses({ category, level, search, minPrice, maxPrice, sortBy, order, page, limit });
 
     if (!courses || courses.length === 0) {
       return res.status(404).json({

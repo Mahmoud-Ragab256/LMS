@@ -4,9 +4,11 @@ import { Fragment } from "react/jsx-runtime";
 
 interface IProps {
   courses: ICourseRes[];
+  isLoading: boolean;
+  error: Error | null;
 }
 
-function CourseContainer({ courses }: IProps) {
+function CourseContainer({ courses, isLoading, error }: IProps) {
 
 
   const renderCourses = courses.map(course => {
@@ -35,9 +37,19 @@ function CourseContainer({ courses }: IProps) {
   })
 
   return (
-    <div className="mx-auto container grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 gap-5 p-5">
-      {renderCourses}
-    </div>
+    <>
+      {isLoading ?
+        <div className="w-full flex items-center justify-center py-20  rounded-lg">
+          <div className="w-10 h-10 border-4 border-neutral-quaternary border-t-primary rounded-full animate-spin" />
+        </div>
+        : error ? <div className="w-full flex items-center justify-center py-20  rounded-lg">
+          No Courses Found
+        </div> : <div className="mx-auto container grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 gap-5 p-5">
+          {renderCourses}
+        </div>
+      }
+    </>
+
   )
 }
 
