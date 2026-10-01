@@ -28,7 +28,7 @@ export const createTeacher = async (data: ICreateTeacher): Promise<ITeacher | un
 export const getAllTeachers = async (data: ITeacherFilter): Promise<ITeacherRes[] | undefined> => {
   try {
 
-    const { active, order } = data;
+    const { active, order, search } = data;
     const values = [];
 
     let query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
@@ -38,6 +38,13 @@ export const getAllTeachers = async (data: ITeacherFilter): Promise<ITeacherRes[
       values.push(active === "true")
       query += ` AND active = $${values.length}`
     }
+
+    if (search) {
+      const searchKeywords = `%${search.trim().split(/\s+/).join('%')}%`;
+      values.push(searchKeywords);
+      query += ` AND username ILIKE $${values.length}`;
+    }
+
 
     const sortOrder = order === 'asc' ? 'ASC' : 'DESC';
 

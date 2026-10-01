@@ -42,6 +42,7 @@ export interface IUpdateTeacher {
 export interface ITeacherFilter {
   active: string;
   order: string;
+  search: string;
 }
 
 // ---------------- Student ---------------

@@ -40,7 +40,8 @@ export const getAllCourses = async (data: ICourseFilter): Promise<ICourseRes[] |
     }
 
     if (search) {
-      values.push(search);
+      const searchKeywords = `%${search.trim().split(/\s+/).join('%')}%`;
+      values.push(searchKeywords);
       query += ` AND title ILIKE $${values.length}`;
     }
 

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/useLanguage';
 import { FaGraduationCap } from "react-icons/fa";
@@ -8,16 +8,27 @@ import { IoIosSearch } from "react-icons/io";
 import { IoMenu } from "react-icons/io5";
 import { IoCloseSharp } from "react-icons/io5";
 import Button from './ui/Button';
-import { useState } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
+
+  const params = new URLSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { isAuthenticated, logout } = useAuth();
   const { t, currentLang, changeLanguage } = useLanguage();
   const [isHidden, setIsHidden] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const hidden = isHidden ? `hidden` : null;
+
+  const searchSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    searchTerm !== "" ? params.set("search", searchTerm) : null;
+    navigate(`/explore?${params.toString()}`)
+  }
 
   return (
     <header dir='ltr' className="fixed top-0 w-full z-1000 h-20 flex items-center justify-between p-4 px-8 bg-white dark:bg-dark-bg text-dark-bg dark:text-gray-300 border-b border-gray-200 dark:border-gray-700 whitespace-nowrap">
@@ -29,10 +40,16 @@ export default function Header() {
       <div>
         <IoMenu className='text-3xl cursor-pointer md:hidden' onClick={() => setIsHidden(false)} />
         <div className="hidden md:flex items-center gap-5">
-          <div className='flex items-center gap-2 border border-dark-bg text-dark-bg  dark:border-gray-300 dark:text-gray-300 p-1 px-3 rounded-full'>
-            <input name='search' placeholder={t("search")} id='search' className='outline-0' />
+          {location.pathname !== '/explore' ? <form className='flex items-center gap-2 border border-dark-bg text-dark-bg dark:border-gray-300 dark:text-gray-300 p-1 px-3 rounded-full'
+            onSubmit={(e) => searchSubmit(e)}
+          >
+            <input name='search' placeholder={t("search")} id='search' className='outline-0'
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setSearchTerm((e.target as HTMLInputElement).value);
+              }}
+            />
             <label htmlFor='search'><IoIosSearch /></label>
-          </div>
+          </form> : null}
           <nav className="flex items-center gap-5">
             <NavLink to='explore' className='hover:text-primary transition duration-250'>{t("explore")}</NavLink>
             {isAuthenticated ? <NavLink to='my-learning' className='hover:text-primary transition duration-250'>{t("my learning")}</NavLink> : null}

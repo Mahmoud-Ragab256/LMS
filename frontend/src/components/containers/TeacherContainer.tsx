@@ -1,14 +1,16 @@
 import { HiOutlineExternalLink } from "react-icons/hi";
-import Img from '../../assets/profile-1.jpg';
+import Img from '../../assets/profile/icon-7797704_1280.png';
 import { useLanguage } from "../../context/useLanguage";
 import type { ITeacherRes } from "../../interfaces";
 import { Fragment } from "react/jsx-runtime";
 
 interface IProps {
   teachers: ITeacherRes[];
+  isLoading: boolean;
+  error: Error | null;
 }
 
-function TeacherContainer({ teachers }: IProps) {
+function TeacherContainer({ teachers, isLoading, error }: IProps) {
 
   const { t } = useLanguage();
 
@@ -20,7 +22,7 @@ function TeacherContainer({ teachers }: IProps) {
       <Fragment key={teacher.id}>
         <div className="min-w-70 max-w-120 bg-surface-light dark:bg-surface-dark rounded-xl shadow shadow-black/5 dark:shadow-white/5 flex flex-col gap-5 p-5">
           <div className="flex items-center gap-5">
-            <span className="w-20 h-20 rounded-xl overflow-hidden">
+            <span className="w-20 h-20 rounded-full overflow-hidden">
               <img src={teacher.imgUrl ? teacher.imgUrl : Img} alt="Teacher Img" className="w-full h-full object-cover" />
             </span>
             <div className="space-y-2">
@@ -51,9 +53,19 @@ function TeacherContainer({ teachers }: IProps) {
   })
 
   return (
-    <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 justify-center gap-5">
-      {renderTeachers}
-    </div>
+    <>
+      {isLoading ?
+        <div className="w-full flex items-center justify-center py-20  rounded-lg">
+          <div className="w-10 h-10 border-4 border-neutral-quaternary border-t-primary rounded-full animate-spin" />
+        </div>
+        : error ? <div className="w-full flex items-center justify-center py-20  rounded-lg">
+          No Teachers Found
+        </div> : <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 justify-center gap-5">
+          {renderTeachers}
+        </div>
+      }
+    </>
+
   )
 }
 

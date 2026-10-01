@@ -77,6 +77,7 @@ function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isElementOpen, setIsElementOpen] = useState<IElementOpen>(initVal);
   const [show, setShow] = useState<"all" | "courses" | "teachers">("all");
+  const [searchTerm, setSearchTerm] = useState<string>(() => searchParams.get("search") ?? "");
   const [courseFilter, setCourseFilter] = useState<ICourseFilter>(() => {
     return {
       categories: searchParams.get("category")?.split(",") ?? initCourseFilter.categories,
@@ -165,9 +166,10 @@ function Explore() {
     const merged = new URLSearchParams();
     courseParams.forEach((value, key) => merged.set(key, value));
     teacherParams.forEach((value, key) => merged.set(key, value));
+    searchTerm !== "" ? merged.set("search", searchTerm) : null;
 
     setSearchParams(merged, { replace: true });
-  }, [courseFilter, teacherFilter]);
+  }, [courseFilter, teacherFilter, searchTerm]);
 
 
 
@@ -204,9 +206,10 @@ function Explore() {
   const deferredFilter = useDeferredValue(courseFilter);
 
   const { isPending, data, error } = useQuery({
-    queryKey: ['courses', deferredFilter],
+    queryKey: ['courses', deferredFilter, searchTerm],
     queryFn: async () => {
       const params = buildFilterParams(deferredFilter, initCourseFilter);
+      searchTerm !== "" ? params.set("search", searchTerm) : null;
       const response = await API.get(`/courses?${params.toString()}`);
       return response.data.data;
 
@@ -214,12 +217,14 @@ function Explore() {
     retry: false
   })
   const { isPending: teachersPending, data: teachersData, error: teachersError } = useQuery({
-    queryKey: ['teachers', teacherFilter],
+    queryKey: ['teachers', teacherFilter, searchTerm],
     queryFn: async () => {
-      const params = buildTeacherFilterParams(teacherFilter, initTeacherFilter)
+      const params = buildTeacherFilterParams(teacherFilter, initTeacherFilter);
+      searchTerm !== "" ? params.set("search", searchTerm) : null;
       const response = await API.get(`teachers?${params.toString()}`);
       return response.data.data;
-    }
+    },
+    retry: false
   })
 
 
@@ -251,10 +256,13 @@ function Explore() {
   return (
     <div className="p-3 px-5 space-y-3 dark:text-gray-300">
       <div className="flex items-center gap-2 mt-20">
-        <span className="w-full flex items-center gap-2 bg-surface-light p-2 rounded-xl shadow shadow-black/5 dark:bg-gray-800">
+        <form className="w-full flex items-center gap-2 bg-surface-light p-2 rounded-xl shadow shadow-black/5 dark:bg-gray-800" onSubmit={(e) => e.preventDefault()}>
           <label className="flex items-center justify-center p-1 cursor-pointer" htmlFor="explore-search"><IoIosSearch /></label>
-          <input type="text" name="search" id="explore-search" placeholder={t('Search for a course, subject, or teacher.')} className="w-full h-full outline-0" />
-        </span>
+          <input type="text" name="search" id="explore-search" placeholder={t('Search for a course, subject, or teacher.')} className="w-full h-full outline-0"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") setSearchTerm((e.target as HTMLInputElement).value)
+            }} />
+        </form>
         <div className="relative bg-primary rounded-xl flex items-center justify-center cursor-pointer z-50" >
           <div className="w-full h-full p-2 z-50" onClick={() => elementToggle("courseFilter")}>
             <VscSettingsCompact className="text-white text-2xl" />
@@ -445,7 +453,7 @@ function Explore() {
           <Button className="btn-sm">{t("View All")}</Button>
         </div>
 
-        {teachersPending ? null : teachersError ? "Something Went Wrong" : <TeacherContainer teachers={teachersData} />}
+        <TeacherContainer teachers={teachersData || []} isLoading={teachersPending} error={teachersError} />
 
       </div> : null}
 

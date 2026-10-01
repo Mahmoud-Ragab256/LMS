@@ -18,14 +18,14 @@ export const getTeachers = async (
 
   try {
 
-    const { active, order } = req.query;
+    const { active, order, search } = req.query;
 
-    const teachers = await getAllTeachers({ active, order });
+    const teachers = await getAllTeachers({ active, order, search });
 
     if (!teachers || teachers.length === 0) {
-      return res.json({
+      return res.status(404).json({
         status: "fail",
-        message: "No Teachers Found!"
+        message: "No Teachers Found"
       })
     }
 
