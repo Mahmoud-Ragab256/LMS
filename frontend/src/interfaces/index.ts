@@ -60,6 +60,7 @@ export interface ITeacherRes {
   phone?: string;
   imgUrl: string;
   active: boolean;
+  subject: CourseCategoryType;
   coursesCount?: number;
   updatedAt: Date | string;
   createdAt: Date | string;

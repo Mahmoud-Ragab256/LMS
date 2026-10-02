@@ -27,7 +27,7 @@ function TeacherContainer({ teachers, isLoading, error }: IProps) {
             </span>
             <div className="space-y-2">
               <h6 className="font-medium">{teacher.username}</h6>
-              <p className="text-white px-3 rounded-full bg-secondary/90 w-fit">{t("Physics")}</p>
+              <p className="text-white px-3 rounded-full bg-secondary/90 w-fit">{t(teacher.subject || "other")}</p>
             </div>
           </div>
 

@@ -13,24 +13,27 @@ import i18n from "../i18next";
 import CourseContainer from "../components/containers/CourseContainer";
 import { useEffect, useState } from "react";
 import API from "../config/axiosConfig";
+import { useQuery } from "@tanstack/react-query";
 
 
 
 function Home() {
 
   const { t } = useLanguage();
-  const [courses, setCourses] = useState([]);
   const dir = i18n.dir();
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const response = await API.get("/courses");
-      setCourses(response.data.data);
-    }
 
-    fetchCourses();
-  }, [])
+  const { isPending, data, error } = useQuery({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const response = await API.get(`/courses`);
+      return response.data.data;
 
+    },
+    retry: false
+  })
+
+  console.log(data)
 
   return (
     <>
@@ -96,7 +99,7 @@ function Home() {
             {t("View All Courses")} {dir === "ltr" ? <FaArrowRightLong /> : <FaArrowLeftLong />}
           </a>
         </div>
-        <CourseContainer courses={courses.slice(0, 4)} />
+        <CourseContainer courses={data.slice(0, 5) || []} isLoading={isPending} error={error} />
       </section>
       <section className="m-auto p-5 py-25 flex flex-col gap-5 items-center text-center dark:text-gray-300">
         <h4 className="text-4xl font-bold">{t("Your Path to Academic Success")}</h4>

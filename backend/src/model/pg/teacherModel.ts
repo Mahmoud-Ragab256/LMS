@@ -75,9 +75,10 @@ export const getTeacherById = async (id: number): Promise<ITeacher | undefined> 
 }
 export const getTeacherByEmail = async (email: string): Promise<ITeacher | undefined> => {
   try {
-    const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
-    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
-    WHERE email = $1;`;
+    const query = `SELECT teachers.* , COUNT(courses.id) AS courses_count
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id
+    WHERE email = $1
+    GROUP BY teachers.id;`;
     const result = await Query<ITeacher>(query, [email]);
     return result[0];
   } catch (error) {

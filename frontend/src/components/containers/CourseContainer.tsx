@@ -1,6 +1,8 @@
 import type { ICourseRes } from "../../interfaces";
 import Img from '../../assets/profile-1.jpg'
 import { Fragment } from "react/jsx-runtime";
+import { Link } from "react-router";
+import { useLanguage } from "../../context/useLanguage";
 
 interface IProps {
   courses: ICourseRes[];
@@ -10,22 +12,34 @@ interface IProps {
 
 function CourseContainer({ courses, isLoading, error }: IProps) {
 
+  const { t } = useLanguage();
+
+  const capitalizeWord = (word: string) => {
+    if (!word) return "";
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  };
 
   const renderCourses = courses.map(course => {
     return (
       <Fragment key={course.id}>
         <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-md shadow-black/5 dark:shadow-white/5">
-          <a href={`/courses/${course.id}`} className="h-60"><img src={course.imgUrl} alt="Physics" className="w-full h-full" /></a>
+
+          <Link to={`/courses/${course.id}`} className="relative h-40">
+            <img src={course.imgUrl} alt="Physics" className="w-full h-full object-cover" />
+            <span className="absolute top-2 inset-e-2 px-2 rounded-full text-xs font-light z-50 bg-primary/60 shadow shadow-black/20 text-white">
+              {t(capitalizeWord(course.category))}
+            </span>
+          </Link>
           <div className="p-4">
-            <h5 className="text-lg font-medium line-clamp-1">{course.title}</h5>
-            <p className="text-sm line-clamp-2">{course.description}</p>
+            <h5 className="font-medium line-clamp-1">{course.title}</h5>
+            <p className="text-xs mt-1 line-clamp-2">{course.description}</p>
           </div>
           <hr className="text-gray-100 dark:text-gray-700" />
-          <div className="p-4 flex items-center justify-between text-md">
+          <div className="p-4 flex items-center justify-between text-sm">
             <span className="block">${course.price}</span>
             <div className="flex items-center gap-2">
               <h6>{course.teacherName}</h6>
-              <span className="block w-10 h-10 rounded-full overflow-hidden">
+              <span className="block w-8 h-8 rounded-full overflow-hidden">
                 <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
               </span>
             </div>
@@ -44,7 +58,7 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
         </div>
         : error ? <div className="w-full flex items-center justify-center py-20  rounded-lg">
           No Courses Found
-        </div> : <div className="mx-auto container grid grid-cols-1 sm:grid-cols-2  xl:grid-cols-4 gap-5 p-5">
+        </div> : <div className="mx-auto container grid grid-cols-2 sm:grid-cols-3  xl:grid-cols-5 gap-5 p-5">
           {renderCourses}
         </div>
       }

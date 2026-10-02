@@ -8,6 +8,7 @@ export interface ITeacher {
   phone: string;
   imgUrl: string;
   active: boolean;
+  subject: CourseCategoryType;
   updatedAt: Date | string;
   createdAt: Date | string;
 }
@@ -20,6 +21,7 @@ export interface ITeacherRes {
   phone?: string;
   imgUrl: string;
   active: boolean;
+  subject: CourseCategoryType;
   coursesCount?: number;
   updatedAt: Date | string;
   createdAt: Date | string;
