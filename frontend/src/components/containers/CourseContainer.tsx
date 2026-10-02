@@ -35,14 +35,17 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
             <p className="text-xs mt-1 line-clamp-2">{course.description}</p>
           </div>
           <hr className="text-gray-100 dark:text-gray-700" />
-          <div className="p-4 flex items-center justify-between text-sm">
-            <span className="block">${course.price}</span>
-            <div className="flex items-center gap-2">
-              <h6>{course.teacherName}</h6>
+
+          <div className="p-4 flex items-center justify-between gap-1 text-sm">
+
+            <div className="flex items-center gap-1">
               <span className="block w-8 h-8 rounded-full overflow-hidden">
                 <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
               </span>
+              <h6 className="text-sm line-clamp-1">{course.teacherName}</h6>
             </div>
+
+            <span className="block">${course.price}</span>
 
           </div>
         </div>
@@ -56,9 +59,9 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
         <div className="w-full flex items-center justify-center py-20  rounded-lg">
           <div className="w-10 h-10 border-4 border-neutral-quaternary border-t-primary rounded-full animate-spin" />
         </div>
-        : error ? <div className="w-full flex items-center justify-center py-20  rounded-lg">
+        : error ? <div className="w-full flex items-center justify-center py-20 rounded-lg">
           No Courses Found
-        </div> : <div className="mx-auto container grid grid-cols-2 sm:grid-cols-3  xl:grid-cols-5 gap-5 p-5">
+        </div> : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 gap-5 p-5">
           {renderCourses}
         </div>
       }
