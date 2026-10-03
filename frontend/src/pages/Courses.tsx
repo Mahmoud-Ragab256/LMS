@@ -41,7 +41,7 @@ function Courses({ }: IProps) {
   return (
     isPending ? <div> pending </div> : error ? <div>Error</div> :
       <>
-        <div className="mt-20 flex flex-col bg-surface-light">
+        <div className="mt-20 flex flex-col bg-surface-light dark:bg-surface-dark dark:text-gray-200">
           <div className="relative w-full h-100">
             <img src={course.imgUrl} alt="Course Image" className="w-full h-full object-cover" />
             <span className="absolute top-0 left-0 w-full h-full bg-gray-800/10 hover:bg-gray-800/30 transition duration-500 z-50 flex items-center justify-center">
@@ -53,7 +53,7 @@ function Courses({ }: IProps) {
           <div className="p-5 space-y-2">
             <div className="flex items-center gap-2">
               <span className="p-0.5 px-2 rounded-full bg-secondary/10 text-secondary text-sm flex items-center gap-1"><BsFire />{t("الاكثر طلبا")}</span>
-              <span className="p-0.5 px-2 rounded-full bg-gray-800/10 text-gray-800 text-sm">{t(course.level)}</span>
+              <span className="p-0.5 px-2 rounded-full bg-gray-800/10 text-gray-800 dark:bg-gray-300/10 dark:text-gray-300 text-sm">{t(course.level)}</span>
               <span className="p-0.5 px-2 rounded-full bg-primary/10 text-primary text-sm">{t(course.category)}</span>
             </div>
             <h2 className="font-medium">{course.title}</h2>
@@ -61,7 +61,7 @@ function Courses({ }: IProps) {
           </div>
         </div>
 
-        <div className="my-2 p-5 bg-surface-light flex items-center justify-between">
+        <div className="my-2 p-5 bg-surface-light dark:bg-surface-dark dark:text-gray-200 flex items-center justify-between">
           <Button className="btn-outline btn-sm">{t("View Profile")}</Button>
           <div className="flex items-center gap-2">
             <div className="flex flex-col items-start gap-2">
@@ -74,52 +74,52 @@ function Courses({ }: IProps) {
           </div>
         </div>
 
-        <div className="my-4 px-5 w-full grid grid-cols-2 md:grid-cols-4 gap-2">
-          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
+        <div className="my-2 px-2 w-full grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
             <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
               <MdOutlineAccessTime className="sm:text-2xl text-primary" />
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500">Duration</span>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Duration</span>
               <p>--- Training Hour</p>
             </div>
           </div>
-          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
-            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+              <BiSolidVideos className="sm:text-2xl text-secondary" />
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500">Duration</span>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Academic Content</span>
+              <p>--- interactive lesson</p>
+            </div>
+          </div>
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-green-600/10 rounded-lg flex items-center justify-center">
+              <MdQuiz className="sm:text-2xl text-green-600" />
+            </span>
+
+            <div className="text-xs sm:text-sm flex flex-col gap-1">
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Quizzes & Exams</span>
               <p>--- Training Hour</p>
             </div>
           </div>
-          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
-            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+              <IoInfiniteOutline className="sm:text-2xl text-purple-500" />
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500">Duration</span>
-              <p>--- Training Hour</p>
-            </div>
-          </div>
-          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
-            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
-            </span>
-
-            <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500">Duration</span>
-              <p>--- Training Hour</p>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Validity</span>
+              <p>--- Unlimited access</p>
             </div>
           </div>
 
         </div>
 
 
-        <div className="my-2 p-5 flex flex-col gap-2 bg-surface-light">
+        <div className="my-2 mb-10 p-5 flex flex-col gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span>
@@ -130,8 +130,8 @@ function Courses({ }: IProps) {
             <p>52 Lessons</p>
           </div>
 
-          <div className="w-full rounded-lg border border-gray-200">
-            <div className="p-5 flex items-center justify-between bg-gray-100 overflow-hidden">
+          <div className="w-full rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="p-5 flex items-center justify-between bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
               <p>
                 {course.title}
               </p>
@@ -182,7 +182,7 @@ function Courses({ }: IProps) {
               </div>
             </div>
           </div>
-        </div>
+        </div >
 
       </>
   )
