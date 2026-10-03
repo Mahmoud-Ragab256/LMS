@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
 import API from "../config/axiosConfig";
 import type { ICourseRes } from "../interfaces";
 import { FaCirclePlay } from "react-icons/fa6";
@@ -8,8 +8,15 @@ import { BsFire } from "react-icons/bs";
 import Button from "../components/ui/Button";
 import Img from '../assets/profile/icon-7797704_1280.png';
 import { MdVerified } from "react-icons/md";
-
-
+import { MdOutlineMenuBook } from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
+import { IoInfiniteOutline } from "react-icons/io5";
+import { BiSolidVideos } from "react-icons/bi";
+import { MdQuiz } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoPlayCircleOutline } from "react-icons/io5";
+import { GoQuestion } from "react-icons/go";
+import { PiExam } from "react-icons/pi";
 
 interface IProps {
 
@@ -64,6 +71,116 @@ function Courses({ }: IProps) {
               <img src={course.teacherImg ? course.teacherImg : Img} alt="Teacher Image" className="w-full h-full rounded-full overflow-hidden object-cover" />
               <MdVerified className="absolute bottom-0 inset-e-0 text-blue-600 text-xs" />
             </span>
+          </div>
+        </div>
+
+        <div className="my-4 px-5 w-full grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+            </span>
+
+            <div className="text-xs sm:text-sm flex flex-col gap-1">
+              <span className="hidden sm:block text-gray-500">Duration</span>
+              <p>--- Training Hour</p>
+            </div>
+          </div>
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+            </span>
+
+            <div className="text-xs sm:text-sm flex flex-col gap-1">
+              <span className="hidden sm:block text-gray-500">Duration</span>
+              <p>--- Training Hour</p>
+            </div>
+          </div>
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+            </span>
+
+            <div className="text-xs sm:text-sm flex flex-col gap-1">
+              <span className="hidden sm:block text-gray-500">Duration</span>
+              <p>--- Training Hour</p>
+            </div>
+          </div>
+          <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light border border-gray-200 shadow shadow-black/5 rounded-lg">
+            <span className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <MdOutlineAccessTime className="sm:text-2xl text-primary" />
+            </span>
+
+            <div className="text-xs sm:text-sm flex flex-col gap-1">
+              <span className="hidden sm:block text-gray-500">Duration</span>
+              <p>--- Training Hour</p>
+            </div>
+          </div>
+
+        </div>
+
+
+        <div className="my-2 p-5 flex flex-col gap-2 bg-surface-light">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span>
+                <MdOutlineMenuBook className="text-3xl text-primary" />
+              </span>
+              <p>Course Content</p>
+            </div>
+            <p>52 Lessons</p>
+          </div>
+
+          <div className="w-full rounded-lg border border-gray-200">
+            <div className="p-5 flex items-center justify-between bg-gray-100 overflow-hidden">
+              <p>
+                {course.title}
+              </p>
+              <span>
+                <IoIosArrowDown className="text-2xl cursor-pointer" />
+              </span>
+            </div>
+
+            <div>
+
+              <div className="p-5 py-3 flex items-center justify-between">
+                <Link to={`courses/${id}/video/:video_id`} className="flex items-center gap-2">
+                  <span>
+                    <IoPlayCircleOutline className="text-2xl text-primary" />
+                  </span>
+                  <p>Video Title</p>
+                </Link>
+
+                <Link to={`courses/${id}/video/:video_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+                  Watch Video
+                </Link>
+              </div>
+
+              <div className="p-5 py-3 flex items-center justify-between">
+                <Link to={`courses/${id}/quiz/:quiz_id`} className="flex items-center gap-2">
+                  <span>
+                    <GoQuestion className="text-2xl text-primary" />
+                  </span>
+                  <p>Quiz Title</p>
+                </Link>
+
+                <Link to={`courses/${id}/quiz/:quiz_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+                  Take Quiz
+                </Link>
+              </div>
+
+              <div className="p-5 py-3 flex items-center justify-between">
+                <Link to={`courses/${id}/exam/:exam_id`} className="flex items-center gap-2">
+                  <span>
+                    <PiExam className="text-2xl text-primary" />
+                  </span>
+                  <p>Exam Title</p>
+                </Link>
+
+                <Link to={`courses/${id}/exam/:exam_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+                  Take Exam
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
