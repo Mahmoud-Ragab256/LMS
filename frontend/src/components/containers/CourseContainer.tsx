@@ -38,12 +38,12 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
 
           <div className="p-4 flex items-center justify-between gap-1 text-sm">
 
-            <div className="flex items-center gap-1">
+            <Link to={`/teachers/${course.teacherId}`} className="flex items-center gap-1">
               <span className="block w-8 h-8 rounded-full overflow-hidden">
                 <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
               </span>
               <h6 className="text-sm line-clamp-1">{course.teacherName}</h6>
-            </div>
+            </Link>
 
             <span className="block">${course.price}</span>
 

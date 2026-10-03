@@ -90,7 +90,7 @@ export const getTeacherCourses = async (teacherId: number): Promise<ICourse[] | 
 export const getCourseById = async (id: number): Promise<ICourse | undefined> => {
   try {
     const query = `SELECT courses.*, teachers.username as teacher_name, teachers.img_url as teacher_img
-    FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE id = $1;`;
+    FROM courses JOIN teachers ON courses.teacher_id = teachers.id WHERE courses.id = $1;`;
     const result = await Query<ICourse>(query, [id]);
     return result[0];
   } catch (error) {

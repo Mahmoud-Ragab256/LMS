@@ -39,7 +39,7 @@ export interface ILoginInput extends IInput {
 
 export interface ICourseRes {
   id: number;
-  teacher_id: number;
+  teacherId: number;
   title: string;
   price: number;
   description: string;
