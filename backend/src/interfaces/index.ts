@@ -222,6 +222,7 @@ export interface IVideo {
   duration: number;
   resolution: string;
   size?: number;
+  type?: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

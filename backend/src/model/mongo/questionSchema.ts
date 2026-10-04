@@ -21,7 +21,6 @@ const questionSchema = new mongoose.Schema(
     },
     modelAnswer: {
       type: String,
-      required: true
     },
     pairs: {
       type: [matchPairSchema],

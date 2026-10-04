@@ -1,5 +1,6 @@
 import mongoConnection from './model/mongo/connection/connection.js';
 import express from 'express';
+import seedDatabase from './seed/Seed.js';
 
 
 const PORT = parseInt(process.env.PORT as string) | 3000
@@ -11,7 +12,7 @@ const app = express();
 const startServer = async (): Promise<void> => {
   try {
     await mongoConnection();
-
+    await seedDatabase();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
       console.log(`http://localhost:${PORT}`);

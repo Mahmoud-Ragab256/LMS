@@ -1,9 +1,10 @@
 import type { Request, Response } from "express"
-import type { ApiResponse } from "../../types/index.js"
+import type { ApiResponse, CourseContentType } from "../../types/index.js"
 import type { ICourse, ICourseFilter, ICourseRes, ICreateCourse, IUpdateCourse } from "../../interfaces/index.js"
 import { createCourse, deleteCourse, getAllCourses, getCourseById, getTeacherCourses, updateCourse } from "../../model/pg/courseModel.js"
 import AppError from "../../utils/appError.js"
 import { createCourseSchema, updateCourseSchema } from "../../validation/courseValidationSchema.js"
+import { getCourseContent } from "../../model/mongo/service/orderService.js"
 
 export const getCourses = async (
   req: Request<{}, ApiResponse<ICourseRes[]>, {}, ICourseFilter>,
@@ -138,6 +139,43 @@ export const getCourse = async (
   }
 }
 
+
+export const getContent = async (
+  req: Request<{ id: number }, ApiResponse<CourseContentType>, {}>,
+  res: Response<ApiResponse<CourseContentType>>
+): Promise<Response<ApiResponse<CourseContentType>>> => {
+
+  try {
+
+    const { id } = req.params;
+
+    if (!id || isNaN(+id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Invalid URL id'
+      })
+    }
+
+    const content = await getCourseContent(id);
+
+    if (!content) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Course is Empty'
+      });
+    }
+
+    return res.json({
+      status: 'success',
+      data: content
+    })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    const statusCode = error instanceof AppError ? error.statusCode : 500;
+    throw new AppError(statusCode, message);
+  }
+}
+
 export const updateCourseData = async (
   req: Request<{ id: number }, ApiResponse<ICourse>, IUpdateCourse>,
   res: Response<ApiResponse<ICourse>>
@@ -213,3 +251,5 @@ export const deleteACourse = async (
     throw new AppError(statusCode, message);
   }
 }
+
+
