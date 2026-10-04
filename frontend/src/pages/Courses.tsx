@@ -17,6 +17,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoPlayCircleOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";
 import { PiExam } from "react-icons/pi";
+import capitalizeWord from "../utils/capltalize";
 
 interface IProps {
 
@@ -53,8 +54,8 @@ function Courses({ }: IProps) {
           <div className="p-5 space-y-2">
             <div className="flex items-center gap-2">
               <span className="p-0.5 px-2 rounded-full bg-secondary/10 text-secondary text-sm flex items-center gap-1"><BsFire />{t("الاكثر طلبا")}</span>
-              <span className="p-0.5 px-2 rounded-full bg-gray-800/10 text-gray-800 dark:bg-gray-300/10 dark:text-gray-300 text-sm">{t(course.level)}</span>
-              <span className="p-0.5 px-2 rounded-full bg-primary/10 text-primary text-sm">{t(course.category)}</span>
+              <span className="p-0.5 px-2 rounded-full bg-gray-800/10 text-gray-800 dark:bg-gray-300/10 dark:text-gray-300 text-sm">{t(capitalizeWord(course.level))}</span>
+              <span className="p-0.5 px-2 rounded-full bg-primary/10 text-primary text-sm">{t(capitalizeWord(course.category))}</span>
             </div>
             <h2 className="font-medium">{course.title}</h2>
             <p className="text-sm">{course.description}</p>
@@ -69,7 +70,9 @@ function Courses({ }: IProps) {
             </div>
             <span className="relative w-10 h-10 ">
               <img src={course.teacherImg ? course.teacherImg : Img} alt="Teacher Image" className="w-full h-full rounded-full overflow-hidden object-cover" />
-              <MdVerified className="absolute bottom-0 inset-e-0 text-blue-600 text-xs" />
+              <span className="relative w-2 h-2 bottom-2.5 inset-s-0.5 rounded-full bg-white flex items-center justify-center">
+                <MdVerified className="absolute text-blue-600 text-sm" />
+              </span>
             </span>
           </div>
         </div>
@@ -81,8 +84,8 @@ function Courses({ }: IProps) {
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Duration</span>
-              <p>--- Training Hour</p>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Duration")}</span>
+              <p>--- {t("Training Hour")}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -91,8 +94,8 @@ function Courses({ }: IProps) {
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Academic Content</span>
-              <p>--- interactive lesson</p>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Academic Content")}</span>
+              <p>--- {t("interactive lesson")}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -101,8 +104,8 @@ function Courses({ }: IProps) {
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Quizzes & Exams</span>
-              <p>--- Training Hour</p>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Quizzes & Exams")}</span>
+              <p>--- {t("Quiz and Exam")}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -111,8 +114,8 @@ function Courses({ }: IProps) {
             </span>
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
-              <span className="hidden sm:block text-gray-500 dark:text-gray-400">Validity</span>
-              <p>--- Unlimited access</p>
+              <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Validity")}</span>
+              <p>{t("Unlimited access")}</p>
             </div>
           </div>
 
@@ -125,9 +128,9 @@ function Courses({ }: IProps) {
               <span>
                 <MdOutlineMenuBook className="text-3xl text-primary" />
               </span>
-              <p>Course Content</p>
+              <p>{t("Course Content")}</p>
             </div>
-            <p>52 Lessons</p>
+            <p>---- {t("Lesson")}</p>
           </div>
 
           <div className="w-full rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -151,7 +154,7 @@ function Courses({ }: IProps) {
                 </Link>
 
                 <Link to={`courses/${id}/video/:video_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  Watch Video
+                  {t("Watch Video")}
                 </Link>
               </div>
 
@@ -164,7 +167,7 @@ function Courses({ }: IProps) {
                 </Link>
 
                 <Link to={`courses/${id}/quiz/:quiz_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  Take Quiz
+                  {t("Take Quiz")}
                 </Link>
               </div>
 
@@ -177,7 +180,7 @@ function Courses({ }: IProps) {
                 </Link>
 
                 <Link to={`courses/${id}/exam/:exam_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  Take Exam
+                  {t("Take Exam")}
                 </Link>
               </div>
             </div>

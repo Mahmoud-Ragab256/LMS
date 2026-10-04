@@ -3,6 +3,7 @@ import Img from '../../assets/profile-1.jpg'
 import { Fragment } from "react/jsx-runtime";
 import { Link } from "react-router";
 import { useLanguage } from "../../context/useLanguage";
+import capitalizeWord from "../../utils/capltalize";
 
 interface IProps {
   courses: ICourseRes[];
@@ -13,11 +14,6 @@ interface IProps {
 function CourseContainer({ courses, isLoading, error }: IProps) {
 
   const { t } = useLanguage();
-
-  const capitalizeWord = (word: string) => {
-    if (!word) return "";
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  };
 
   const renderCourses = courses.map(course => {
     return (

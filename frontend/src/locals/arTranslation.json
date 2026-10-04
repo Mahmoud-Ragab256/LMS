@@ -83,5 +83,19 @@
   "active": "نشط",
   "inactive": "غير نشط",
   "Max Price": "أعلي سعر",
-  "Min Price": "أقل سعر"
+  "Min Price": "أقل سعر",
+  "View Profile": "الملف الشخصي",
+  "Duration": "المدة الزمنية",
+  "Training Hour": "ساعة تدريبية",
+  "Academic Content": "المحتوي التعليمي",
+  "interactive lesson": "درسًا تفاعليًا",
+  "Quizzes & Exams": "الإختبارات و الإمتحانات",
+  "Quiz and Exam": "إمتحان و إختبار",
+  "Validity": "الصلاحية",
+  "Unlimited access": "وصول غير محدود",
+  "Course Content": "محتوي الدورة",
+  "Lesson": "درسًا",
+  "Watch Video": "مشاهدة الفيديو",
+  "Take Quiz": "بدء الإختبار",
+  "Take Exam": "بدء الإمتحان"
 }
