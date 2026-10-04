@@ -4,7 +4,7 @@ import type { IVideo } from '../../interfaces/index.js';
 const videoSchema = new mongoose.Schema(
   {
     courseId: {
-      type: String,
+      type: Number,
       required: true,
       index: true
     },

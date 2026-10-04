@@ -3,7 +3,7 @@ import type { ICourseCounter } from "../../interfaces/index.js";
 
 const courseCounterSchema = new mongoose.Schema({
   courseId: {
-    type: String,
+    type: Number,
     required: true,
     unique: true
   },

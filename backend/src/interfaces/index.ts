@@ -215,7 +215,7 @@ export interface ICourseStudent {
 
 export interface IVideo {
   _id: string;
-  courseId: string;
+  courseId: number;
   order: number;
   title: string;
   url: string;
@@ -250,7 +250,7 @@ export interface IQuestion {
 
 export interface IAssessment {
   _id: string;
-  courseId: string;
+  courseId: number;
   order: number;
   assessmentType: AssessmentType;
   title: string;
@@ -296,7 +296,7 @@ export interface IAssessmentAttempt {
 
 export interface ICourseCounter {
   _id: string;
-  courseId: string;
+  courseId: number;
   lastOrder: number;
 }
 
