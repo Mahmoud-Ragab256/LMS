@@ -8,7 +8,8 @@ import UserLayout from '../layout/UserLayout';
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Explore from '../pages/Explore';
-import Courses from '../pages/Courses';
+import Course from '../pages/Course';
+import Teacher from '../pages/Teacher';
 
 
 
@@ -23,7 +24,8 @@ const router = createBrowserRouter(
         <Route path='register' element={<Register />} />
         <Route path='login' element={<Login />} />
         <Route path='explore' element={<Explore />} />
-        <Route path='courses/:id' element={<Courses />} />
+        <Route path='courses/:id' element={<Course />} />
+        <Route path='teachers/:id' element={<Teacher />} />
 
 
       </Route>

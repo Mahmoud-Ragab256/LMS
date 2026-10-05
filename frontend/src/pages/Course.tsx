@@ -24,7 +24,7 @@ interface IProps {
 
 }
 
-function Courses({ }: IProps) {
+function Course({ }: IProps) {
 
   let duration: number = 0;
   let videoCount: number = 0;
@@ -136,7 +136,9 @@ function Courses({ }: IProps) {
         </div>
 
         <div className="my-2 p-5 bg-surface-light dark:bg-surface-dark dark:text-gray-200 flex items-center justify-between">
-          <Button className="btn-outline btn-sm">{t("View Profile")}</Button>
+          <Link to={`/teachers/${course.teacherId}`}>
+            <Button className="btn-outline btn-sm">{t("View Profile")}</Button>
+          </Link>
           <div className="flex items-center gap-2">
             <div className="flex flex-col items-start gap-2">
               <h4>{course.teacherName}</h4>
@@ -233,4 +235,4 @@ function Courses({ }: IProps) {
   )
 }
 
-export default Courses
+export default Course
