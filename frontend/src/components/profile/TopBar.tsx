@@ -2,7 +2,7 @@ import { MdVerified } from "react-icons/md";
 import type { ITeacherRes } from "../../interfaces";
 import { IoSettingsOutline } from "react-icons/io5";
 import { GoShareAndroid } from "react-icons/go";
-import Img from "../assets/profile/icon-7797704_1280.png";
+import Img from "../../assets/profile/icon-7797704_1280.png";
 
 interface IProps {
   teacher: ITeacherRes;

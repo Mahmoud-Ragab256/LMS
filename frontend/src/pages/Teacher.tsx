@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import API from "../config/axiosConfig";
 import type { ITeacherRes } from "../interfaces";
 import TopBar from "../components/profile/Topbar";
+import About from "../components/profile/About";
 
 function Teacher() {
 
@@ -33,7 +34,7 @@ function Teacher() {
   return (
     <>
       <TopBar teacher={teacher} />
-
+      <About teacher={teacher} />
     </>
   )
 }
