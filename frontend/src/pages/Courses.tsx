@@ -18,12 +18,18 @@ import { IoPlayCircleOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";
 import { PiExam } from "react-icons/pi";
 import capitalizeWord from "../utils/capltalize";
+import type { CourseContentType } from "../types";
 
 interface IProps {
 
 }
 
 function Courses({ }: IProps) {
+
+  let duration: number = 0;
+  let videoCount: number = 0;
+  let quizCount: number = 0;
+  let examCount: number = 0;
 
   const { id } = useParams<{ id: string }>();
 
@@ -38,6 +44,73 @@ function Courses({ }: IProps) {
     },
     retry: false
   })
+
+  const { isPending: contentPending, data: content, error: contentError } = useQuery<CourseContentType>({
+    queryKey: ['content'],
+    queryFn: async () => {
+      const response = await API.get(`/courses/${id}/content`);
+      return response.data.data;
+    },
+    retry: false
+  })
+
+
+  const renderContent = content?.map((c, index) => {
+
+    c.type === 'video' ? duration += c.duration : null;
+    c.type === 'video' ? videoCount += 1 : null;
+    c.type === 'quiz' ? quizCount += 1 : null;
+    c.type === 'exam' ? examCount += 1 : null;
+
+    return (
+      c.type === 'video' ?
+        <div key={index} className="p-5 py-3 flex items-center justify-between">
+          <Link to={`courses/${id}/video/:video_id`} className="flex items-center gap-2">
+            <span>
+              <IoPlayCircleOutline className="text-2xl text-primary" />
+            </span>
+            <p>{c.title}</p>
+          </Link>
+
+          <Link to={`courses/${id}/video/:video_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+            {t("Watch Video")}
+          </Link>
+        </div> :
+
+
+        c.type === 'quiz' ? <div key={index} className="p-5 py-3 flex items-center justify-between">
+          <Link to={`courses/${id}/quiz/:quiz_id`} className="flex items-center gap-2">
+            <span>
+              <GoQuestion className="text-2xl text-primary" />
+            </span>
+            <p>{c.title}</p>
+          </Link>
+
+          <Link to={`courses/${id}/quiz/:quiz_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+            {t("Take Quiz")}
+          </Link>
+        </div> :
+
+
+          <div key={index} className="p-5 py-3 flex items-center justify-between">
+            <Link to={`courses/${id}/exam/:exam_id`} className="flex items-center gap-2">
+              <span>
+                <PiExam className="text-2xl text-primary" />
+              </span>
+              <p>{c.title}</p>
+            </Link>
+
+            <Link to={`courses/${id}/exam/:exam_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
+              {t("Take Exam")}
+            </Link>
+          </div>
+
+    )
+  })
+
+  const totalHours = Math.floor(duration / 3600);
+  const totalMinutes = Math.floor((duration % 3600) / 60);
+
 
   return (
     isPending ? <div> pending </div> : error ? <div>Error</div> :
@@ -85,7 +158,7 @@ function Courses({ }: IProps) {
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
               <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Duration")}</span>
-              <p>--- {t("Training Hour")}</p>
+              <p>{`${totalHours} ${t("Hours")} ${totalMinutes} ${t("Minutes")}`}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -95,7 +168,7 @@ function Courses({ }: IProps) {
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
               <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Academic Content")}</span>
-              <p>--- {t("interactive lesson")}</p>
+              <p>{videoCount} {t("interactive lesson")}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -105,7 +178,7 @@ function Courses({ }: IProps) {
 
             <div className="text-xs sm:text-sm flex flex-col gap-1">
               <span className="hidden sm:block text-gray-500 dark:text-gray-400">{t("Quizzes & Exams")}</span>
-              <p>--- {t("Quiz and Exam")}</p>
+              <p>{quizCount + examCount} {t("Quiz and Exam")}</p>
             </div>
           </div>
           <div className="p-2 w-full flex flex-col sm:flex-row items-center gap-2 bg-surface-light dark:bg-surface-dark dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow shadow-white/5 rounded-lg">
@@ -130,7 +203,7 @@ function Courses({ }: IProps) {
               </span>
               <p>{t("Course Content")}</p>
             </div>
-            <p>---- {t("Lesson")}</p>
+            <p>{videoCount} {t("Lesson")}</p>
           </div>
 
           <div className="w-full rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -143,47 +216,16 @@ function Courses({ }: IProps) {
               </span>
             </div>
 
+
+
             <div>
-
-              <div className="p-5 py-3 flex items-center justify-between">
-                <Link to={`courses/${id}/video/:video_id`} className="flex items-center gap-2">
-                  <span>
-                    <IoPlayCircleOutline className="text-2xl text-primary" />
-                  </span>
-                  <p>Video Title</p>
-                </Link>
-
-                <Link to={`courses/${id}/video/:video_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  {t("Watch Video")}
-                </Link>
-              </div>
-
-              <div className="p-5 py-3 flex items-center justify-between">
-                <Link to={`courses/${id}/quiz/:quiz_id`} className="flex items-center gap-2">
-                  <span>
-                    <GoQuestion className="text-2xl text-primary" />
-                  </span>
-                  <p>Quiz Title</p>
-                </Link>
-
-                <Link to={`courses/${id}/quiz/:quiz_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  {t("Take Quiz")}
-                </Link>
-              </div>
-
-              <div className="p-5 py-3 flex items-center justify-between">
-                <Link to={`courses/${id}/exam/:exam_id`} className="flex items-center gap-2">
-                  <span>
-                    <PiExam className="text-2xl text-primary" />
-                  </span>
-                  <p>Exam Title</p>
-                </Link>
-
-                <Link to={`courses/${id}/exam/:exam_id`} className="text-primary hover:underline hover:scale-105 transition duration-300">
-                  {t("Take Exam")}
-                </Link>
-              </div>
+              {contentPending ? <div className="w-full flex items-center justify-center py-20  rounded-lg">
+                <div className="w-10 h-10 border-4 border-neutral-quaternary border-t-primary rounded-full animate-spin" />
+              </div> : contentError ? <div>Error</div> :
+                renderContent}
             </div>
+
+
           </div>
         </div >
 

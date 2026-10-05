@@ -1,4 +1,4 @@
-import type { ThemeType, RegisterNameType, LoginNameType, CourseCategoryType, CourseLevelType } from "../types";
+import type { ThemeType, RegisterNameType, LoginNameType, CourseCategoryType, CourseLevelType, AssessmentType, QuestionType } from "../types";
 
 
 export interface IThemeContext {
@@ -64,4 +64,49 @@ export interface ITeacherRes {
   coursesCount?: number;
   updatedAt: Date | string;
   createdAt: Date | string;
+}
+
+export interface IVideo {
+  _id: string;
+  courseId: number;
+  order: number;
+  title: string;
+  url: string;
+  duration: number;
+  resolution: string;
+  size?: number;
+  type?: 'video';
+  createdAt: Date | string;
+  updatedAt: Date | string;
+}
+
+
+export interface IMatchPair {
+  left: string;
+  right: string;
+}
+
+export interface IQuestion {
+  type: QuestionType;
+  text: string;
+  options?: string[];
+  correctAnswer?: string;
+  modelAnswer?: string;
+  pairs?: IMatchPair[];
+  points: number;
+}
+
+
+export interface IAssessment {
+  _id: string;
+  courseId: number;
+  order: number;
+  assessmentType: AssessmentType;
+  title: string;
+  questions: IQuestion[];
+  timeLimit: number;
+  passingScore: number;
+  type?: 'quiz' | 'exam';
+  createdAt: Date;
+  updatedAt: Date;
 }
