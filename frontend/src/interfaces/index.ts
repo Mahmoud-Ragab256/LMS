@@ -110,3 +110,17 @@ export interface IAssessment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ITeacherRes {
+  id: number;
+  username: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  imgUrl: string;
+  active: boolean;
+  subject: CourseCategoryType;
+  coursesCount?: number;
+  updatedAt: Date | string;
+  createdAt: Date | string;
+}

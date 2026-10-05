@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import API from "../config/axiosConfig";
+import type { ITeacherRes } from "../interfaces";
+import TopBar from "../components/profile/Topbar";
 
 function Teacher() {
 
   const { id } = useParams<{ id: string }>();
 
-  const { data: teacher, isLoading, error } = useQuery({
+  const { data: teacher, isLoading, error } = useQuery<ITeacherRes>({
     queryKey: ['teacher'],
     queryFn: async () => {
       const response = await API.get(`/teachers/${id}`);
@@ -26,12 +28,12 @@ function Teacher() {
   if (!teacher) {
     return <div>Teacher not found</div>;
   }
+
+
   return (
     <>
-      <div className='mt-20 flex flex-col items-center justify-center h-screen'>
-        <h1 className='text-4xl font-bold mb-4'>Teacher Page</h1>
-        <p className='text-lg '>{teacher}</p>
-      </div>
+      <TopBar teacher={teacher} />
+
     </>
   )
 }
