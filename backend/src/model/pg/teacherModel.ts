@@ -62,8 +62,9 @@ export const getAllTeachers = async (data: ITeacherFilter): Promise<ITeacherRes[
 export const getTeacherById = async (id: number): Promise<ITeacher | undefined> => {
   try {
     const query = `SELECT teachers.id, teachers.username, teachers.img_url, teachers.active, COUNT(courses.id) AS courses_count
-    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id GROUP BY teachers.id
-    WHERE id = $1;`;
+    FROM teachers LEFT JOIN courses ON teachers.id = courses.teacher_id
+    WHERE teachers.id = $1
+    GROUP BY teachers.id;`;
     const result = await Query<ITeacher>(query, [id]);
     delete (result[0] as any).password
     return result[0];
