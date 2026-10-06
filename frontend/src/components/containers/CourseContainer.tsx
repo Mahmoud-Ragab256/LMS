@@ -18,7 +18,7 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
   const renderCourses = courses.map(course => {
     return (
       <Fragment key={course.id}>
-        <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 hover:-translate-y-1 transition duration-300 shadow-md shadow-black/5 dark:shadow-white/5">
+        <div className="w-full rounded-xl overflow-hidden flex flex-col bg-surface-light border border-gray-300 dark:bg-surface-dark dark:border-gray-700 dark:text-gray-300 hover:-translate-y-1 transition duration-300 shadow-md shadow-black/5 dark:shadow-black/20">
 
           <Link to={`/courses/${course.id}`} className="relative h-40">
             <img src={course.imgUrl} alt="Physics" className="w-full h-full object-cover" />

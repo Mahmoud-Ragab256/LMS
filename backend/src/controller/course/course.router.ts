@@ -7,7 +7,7 @@ const coursesRouter = express.Router();
 coursesRouter
   .get('/', getCourses)
   .post('/', addCourse)
-  .get('/teacher/:id', getAllTeacherCourses)
+  .get('/teacher/:teacher_id', getAllTeacherCourses)
   .get('/:id', getCourse)
   .get('/:id/content', getContent)
   .put('/:id', updateCourseData)
