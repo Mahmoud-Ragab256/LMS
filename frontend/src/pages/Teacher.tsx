@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import API from "../config/axiosConfig";
 import type { ICourseRes, ITeacherRes } from "../interfaces";
-import TopBar from "../components/profile/Topbar";
+import TopBar from "../components/profile/TopBar";
 import About from "../components/profile/About";
 import CourseContainer from "../components/containers/CourseContainer";
 

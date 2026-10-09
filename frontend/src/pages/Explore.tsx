@@ -465,7 +465,7 @@ function Explore() {
           </div>
           <Button className="btn-sm btn-secondary">{t("View All")}</Button>
         </div>
-        <CourseContainer courses={data ? data.slice(0, 8) : []} isLoading={isPending} error={error} />
+        <CourseContainer courses={data ? data.slice(0, 10) : []} isLoading={isPending} error={error} />
 
       </div> : null}
 

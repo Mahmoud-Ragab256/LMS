@@ -10,6 +10,7 @@ import Home from '../pages/Home';
 import Explore from '../pages/Explore';
 import Course from '../pages/Course';
 import Teacher from '../pages/Teacher';
+import MyLearning from '../pages/MyLearning';
 
 
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
         <Route path='explore' element={<Explore />} />
         <Route path='courses/:id' element={<Course />} />
         <Route path='teachers/:id' element={<Teacher />} />
+        <Route path='my-learning' element={<MyLearning />} />
 
 
       </Route>
