@@ -1,9 +1,11 @@
 import type { ICourseRes } from "../../interfaces";
 import Img from '../../assets/profile-1.jpg'
 import { Fragment } from "react/jsx-runtime";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useLanguage } from "../../context/useLanguage";
 import capitalizeWord from "../../utils/capltalize";
+import Button from "../ui/Button";
+import { IoIosStats } from "react-icons/io";
 
 interface IProps {
   courses: ICourseRes[];
@@ -14,6 +16,7 @@ interface IProps {
 function CourseContainer({ courses, isLoading, error }: IProps) {
 
   const { t } = useLanguage();
+  const location = useLocation();
 
   const renderCourses = courses.map(course => {
     return (
@@ -30,24 +33,54 @@ function CourseContainer({ courses, isLoading, error }: IProps) {
             <h5 className="font-medium line-clamp-1">{course.title}</h5>
             <p className="text-xs mt-1 line-clamp-2">{course.description}</p>
           </div>
-          <hr className="text-gray-100 dark:text-gray-700" />
 
-          <div className="p-4 flex items-center justify-between gap-1 text-sm">
+          {location.pathname === '/my-learning' ?
+            <div className="p-2 flex items-center justify-between gap-1 text-sm">
+              <Link to={`/courses/${course.id}`} className="w-full">
+                <Button className="btn-sm w-full" >
+                  {t("Manage Course")}
+                </Button>
+              </Link>
+              <Button className="btn-outline btn-sm text-xl">
+                <IoIosStats />
+              </Button>
+            </div>
+            : <> <hr className="text-gray-100 dark:text-gray-700" />
+              <div className="p-4 flex items-center justify-between gap-1 text-sm">
 
-            <Link to={`/teachers/${course.teacherId}`} className="flex items-center gap-1">
-              <span className="block w-8 h-8 rounded-full overflow-hidden">
-                <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
-              </span>
-              <h6 className="text-sm line-clamp-1">{course.teacherName}</h6>
-            </Link>
+                <Link to={`/teachers/${course.teacherId}`} className="flex items-center gap-1">
+                  <span className="block w-8 h-8 rounded-full overflow-hidden">
+                    <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
+                  </span>
+                  <h6 className="text-sm line-clamp-1">{course.teacherName}</h6>
+                </Link>
 
-            <span className="block">${course.price}</span>
+                <span className="block">${course.price}</span>
 
-          </div>
+              </div>
+            </>}
+
         </div>
       </Fragment>
     )
   })
+
+  //         <div className="p-4 flex items-center justify-between gap-1 text-sm">
+
+  //           <Link to={`/teachers/${course.teacherId}`} className="flex items-center gap-1">
+  //             <span className="block w-8 h-8 rounded-full overflow-hidden">
+  //               <img src={course.teacherImg ? course.teacherImg : Img} alt="teacher" className="w-full h-full object-cover" />
+  //             </span>
+  //             <h6 className="text-sm line-clamp-1">{course.teacherName}</h6>
+  //           </Link>
+
+  //           <span className="block">${course.price}</span>
+
+  //         </div>
+  //       </div>
+  //     </Fragment>
+  //   )
+  // })
 
   return (
     <>

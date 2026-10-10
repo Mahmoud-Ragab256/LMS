@@ -6,6 +6,7 @@ import Button from "../components/ui/Button";
 import { FaPlus } from "react-icons/fa6";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { MdOutlineTrendingUp, MdOutlineTrendingDown } from "react-icons/md";
+import CourseContainer from "../components/containers/CourseContainer";
 
 
 
@@ -14,6 +15,8 @@ import { MdOutlineTrendingUp, MdOutlineTrendingDown } from "react-icons/md";
 
 const MyLearning = () => {
   const { t } = useLanguage();
+
+
   const { data, isPending, error } = useQuery<ICourseRes[]>({
     queryKey: ['my-learning'],
     queryFn: async () => {
@@ -101,6 +104,15 @@ const MyLearning = () => {
         </div>
       </div>
 
+
+      <div className="m-5 bg-surface-light dark:bg-surface-dark rounded-lg shadow shadow-black/5 p-5">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-lg font-bold">{t("إدارة الدورات التدريبية")}</h3>
+          <Button className="btn-sm btn-primary">{t("View All")}</Button>
+        </div>
+
+        <CourseContainer courses={data ? data.slice(0, 10) : []} isLoading={isPending} error={error} />
+      </div>
     </>
   );
 };
